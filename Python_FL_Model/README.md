@@ -27,12 +27,32 @@ Follow this [how-to guide](https://flower.ai/docs/framework/how-to-run-flower-wi
 
 You can run Flower on Docker too! Check out the [Flower with Docker](https://flower.ai/docs/framework/docker/index.html) documentation.
 
-## Resources
+## Customizing the Model
 
-- Flower website: [flower.ai](https://flower.ai/)
-- Check the documentation: [flower.ai/docs](https://flower.ai/docs/)
-- Give Flower a ⭐️ on GitHub: [GitHub](https://github.com/adap/flower)
-- Join the Flower community!
-  - [Flower Slack](https://flower.ai/join-slack/)
-  - [Flower Discuss](https://discuss.flower.ai/)
+### Change the Dataset
+To change the dataset you need to write a custom `dataset_load.py` file. In my example my data was already feature selected, scaled, cleaned of duplicates and inf/NaN values.
+The new `dataset_load.py` needs to return these values trainloader, validaton_loader ,X_test_full, X_Validation, y_true,X_train_classifier,y_class.
+
+#### trainloader
+This is the pure Benign training data from a dataset saved in a Dataloader.
+
+#### validaton_loader
+This is the pure Benign validation data from a dataset saved in a Dataloader.
+
+#### X_test_full
+This is a mix of Benign and Anomaly testing data that is used for evaluation. This data is used to calculate the reconstruction error and the Metrics. 
+In case of Crossdataset this is from the Testing Dataset.
+
+#### X_Validation
+Same data as `validation_loader` only not saved in a Dataloader. Used for calculating unsupervised threshold and normalizing the reconstruction errors for Decision tree `mu_val` and `sigma_val`.
+In case of Crossdataset this is from the Training Dataset.
+#### y_true
+The Ground Truth for X_test_full. 0 for Benign, 1 for Anomaly.
+
+#### X_train_classifier
+This is a mix of Benign and Anomaly testing data that is used for fitting the Decision Tree Classifier. 
+In case of Crossdataset this is from the Training Dataset.
+
+#### y_class
+The Ground Truth for y_class. 0 for Benign, 1 for Anomaly.
 
