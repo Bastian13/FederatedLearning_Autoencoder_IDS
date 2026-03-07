@@ -29,8 +29,8 @@ You can run Flower on Docker too! Check out the [Flower with Docker](https://flo
 
 ## Customizing the Model
 
-### Change the Dataset
-To change the dataset you need to write a custom `dataset_load.py` file. In my example my data was already feature selected, scaled, cleaned of duplicates and inf/NaN values.
+### Use own Dataset
+To use your own Dataset you need to write a custom `dataset_load.py` file. In my example my data was already feature selected, scaled, cleaned of duplicates and inf/NaN values.
 The new `dataset_load.py` needs to return these values trainloader, validaton_loader ,X_test_full, X_Validation, y_true,X_train_classifier,y_class.
 
 #### trainloader
@@ -65,3 +65,4 @@ The Ground Truth for y_class. 0 for Benign, 1 for Anomaly.
 ### For Server Global Model
 - `load_centralized_dataset`
 - `load_crossdataset`
+
