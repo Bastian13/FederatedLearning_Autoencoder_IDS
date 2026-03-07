@@ -56,3 +56,12 @@ In case of Crossdataset this is from the Training Dataset.
 #### y_class
 The Ground Truth for y_class. 0 for Benign, 1 for Anomaly.
 
+## dataset_load.py
+
+### For Clients 
+- `load_cross_data`
+- `load_mono_dataset`
+
+### For Server Global Model
+- `load_centralized_dataset`
+- `load_crossdataset`
