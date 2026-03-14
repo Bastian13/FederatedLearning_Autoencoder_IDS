@@ -8,7 +8,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "if-and-auto"
+name = "Python_FL_Model"
 version = "1.0.0"
 description = ""
 license = "Apache-2.0"
@@ -22,6 +22,7 @@ dependencies = [
     "scikit-learn",
     "numpy",
     "pandas",
+    "psutil"
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -32,8 +33,8 @@ publisher = "k"
 
 # Point to your ServerApp and ClientApp objects
 [tool.flwr.app.components]
-serverapp = "if_and_auto2.server_app:app"
-clientapp = "if_and_auto2.client_app:app"
+serverapp = "src.server_app:app"
+clientapp = "src.client_app:app"
 
 # Custom config values accessible via `context.run_config`
 [tool.flwr.app.config]
@@ -43,7 +44,7 @@ local-epochs = 3
 lr = 5e-4
 mu = 0.1
 input-dim = 67
-which_dataset = 0
+which_dataset = 1
 # Default federation to use when running the app
 [tool.flwr.federations]
 default = "local-simulation"
