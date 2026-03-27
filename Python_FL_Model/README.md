@@ -57,12 +57,12 @@ In case of Crossdataset this is from the Training Dataset.
 The Ground Truth for y_class. 0 for Benign, 1 for Anomaly.
 
 ## dataset_load.py
-
+change `which_dataset` in `pyproject.yoml` to change Clients training and testing Dataset. change `which_dataset` in `task.py` to change Server Evaluation dataset
 ### For Clients 
-- `load_cross_data`
-- `load_mono_dataset`
+- `load_cross_data` `which_dataset` 0 is CIC-BoTIoT->IoTID20, 1 is IoTID20->CIC-BoTIoT
+- `load_mono_dataset` `which_dataset` 0 is CIC-BoTIoT, 1 is IoTID20
 
 ### For Server Global Model
-- `load_centralized_dataset`
-- `load_crossdataset`
+- `load_centralized_dataset` `which_dataset` 0 is CIC-BoTIoT, 1 is IoTID20
+- `load_crossdataset` `which_dataset` 0 is CIC-BoTIoT->IoTID20, 1 is IoTID20->CIC-BoTIoT
 
