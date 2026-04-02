@@ -206,12 +206,12 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     # Load data set
     # which_dataset 2 for BoTIoT; 3 for IoTID20 just like client
 
-    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_centralized_dataset(which_dataset= 1) #remove this for no dt
+    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_centralized_dataset(which_dataset= 1) #remove this for no dt
     # which_dataset 0 for Training BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing BoTIoT just like client
-    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_crossdataset(which_dataset = 1)  #remove this for no dt
+    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_crossdataset(which_dataset = 0)  #remove this for no dt
 
     # Evaluate the global model on the test set
-    threshold, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,dt,mu,sigma = test( #remove this for no dt
+    threshold_ae, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,dt,mu,sigma = test( #remove this for no dt
         model,
         X_test_full, X_test_validation, 1000,
         device, X_train_dt,y_dt #remove this for no dt
@@ -287,7 +287,7 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
                       feature = tree_.feature[node]
                       threshold = tree_.threshold[node]
                     
-                      f.write(f"{indent}if (features[{feature}] <= {threshold:.6f}f) {{\n")
+                      f.write(f"{indent}if (features[{feature}] <= {threshold:.15f}f) {{\n")
                       recurse(tree_.children_left[node], depth + 1)
                       f.write(f"{indent}}} else {{\n")
                       recurse(tree_.children_right[node], depth + 1)
@@ -303,9 +303,9 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     export_tree_to_c(dt, feature_names=["score"])
     # for ESP32 inference, values used for Testing
     with open("values.h", "w") as f:            
-              f.write(f"float mu_val = {mu}f\n")
-              f.write(f"float sigma_val = {sigma}f\n")
-              f.write(f"float threshold = {threshold}f\n")
+              f.write(f"const float pymu_val = {mu}f;\n")
+              f.write(f"const float pysigma_val = {sigma}f;\n")
+              f.write(f"const float pythreshold = {threshold_ae}f;\n")
 
 
 
@@ -314,25 +314,26 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     # Construct and return reply Message
     # Return the evaluation metrics
     return MetricRecord({
-        "threshold": float(threshold),
-        "FPR AE": float("{:.2f}".format(fprpercentile)),
-        "FNR AE": float("{:.2f}".format(fnrpercentile)),
-        "MCC DT": float("{:.2f}".format(mcc_dt)), #remove this for no dt
-        "MCC AE": float("{:.2f}".format(mcc_percentile)),
-        "FPR DT": float("{:.2f}".format(fprdt)), #remove this for no dt
-        "FNR DT": float("{:.2f}".format(fnrdt)), #remove this for no dt
-        "ROC AUC DT": float("{:.2f}".format(b)), #remove this for no dt
-        "ROC AUC AE": float("{:.2f}".format(c)),
-        "AP DT": float("{:.2f}".format(a)), #remove this for no dt
-        "AP AE": float("{:.2f}".format(d)),
-        "IDC DT": float("{:.2f}".format(idc_dt)), #remove this for no dt
-        "IDC AE": float("{:.2f}".format(idc_percentile)),
+        "threshold": float(threshold_ae),
+        "FPR AE": float("{:.4f}".format(fprpercentile)),
+        "FNR AE": float("{:.4f}".format(fnrpercentile)),
+        "MCC DT": float("{:.4f}".format(mcc_dt)), #remove this for no dt
+        "MCC AE": float("{:.4f}".format(mcc_percentile)),
+        "FPR DT": float("{:.4f}".format(fprdt)), #remove this for no dt
+        "FNR DT": float("{:.4f}".format(fnrdt)), #remove this for no dt
+        "ROC AUC DT": float("{:.4f}".format(b)), #remove this for no dt
+        "ROC AUC AE": float("{:.4f}".format(c)),
+        "AP DT": float("{:.4f}".format(a)), #remove this for no dt
+        "AP AE": float("{:.4f}".format(d)),
+        "IDC DT": float("{:.4f}".format(idc_dt)), #remove this for no dt
+        "IDC AE": float("{:.4f}".format(idc_percentile)),
         "F1-Score DT": float("{:.4f}".format(f1_dt)), #remove this for no dt
         "F1-Score AE": float("{:.4f}".format(f1_percentile)),
         "FDR DT": float("{:.4f}".format(fdr_dt)), #remove this for no dt
         "FDR AE": float("{:.4f}".format(fdr_percentile)),                
         "Confusion Matrix DT": cm_dt.flatten().tolist(), #remove this for no dt
         "Confusion Matrix AE": cmpercentile.flatten().tolist(),
+        "time": float(("{:.4f}".format(testing_time)))
     })
     
 def intrusion_detection_capability(y_true, y_pred):

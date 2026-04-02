@@ -330,7 +330,7 @@ def load_centralized_dataset(which_dataset):
         # load anomaly samples with random flow duration
         X_test_attacks = pd.read_csv(f"small_BoTIoT_dataset_allattacks_clean/split_29.csv")
         # calibration split for calibrating the tflite model for ESP32 Deployment
-        calibration_split = pd.concat([pd.read_csv(f"small_BoTIoT_dataset_allattacks_clean/split_15.csv"),pd.read_csv(f"small_BoTIoT_dataset_benign_clean_noleak/glo_split_8.csv")],ignore_index=True)
+        calibration_split = pd.read_csv(f"small_BoTIoT_dataset_benign_clean_noleak/glo_split_8.csv")
 
         print("load_data_BoTIoT 90/10")
     elif which_dataset ==1 :
@@ -348,7 +348,7 @@ def load_centralized_dataset(which_dataset):
         # load anomaly samples with random flow duration
         X_test_attacks = pd.read_csv(f"small_IoTID20_dataset_allattacks_clean/split_29.csv")
         # calibration split for calibrating the tflite model for ESP32 Deployment
-        calibration_split = pd.concat([pd.read_csv(f"small_IoTID20_dataset_allattacks_clean/split_15.csv"),pd.read_csv(f"small_IoTID20_dataset_benign_clean_noleak/glo_split_8.csv")],ignore_index=True)
+        calibration_split = pd.read_csv(f"small_IoTID20_dataset_benign_clean_noleak/glo_split_8.csv")
         print("load_data_IoTID20 90/10")
     
 
@@ -367,8 +367,6 @@ def load_centralized_dataset(which_dataset):
     X_test_attacks.columns = X_test_attacks.columns.str.replace('_', ' ')
     calibration_split.columns = calibration_split.columns.str.replace('_', ' ')
     
-    # get 50 random samples of benign and 50 random samples of anomaly
-    calibration_split = calibration_split.groupby('Label').sample(n=50, random_state=42)
    
     # remove the label_col features
     df_benign = df_benign.drop([col for col in label_col if col in df_benign.columns], axis=1)
@@ -423,6 +421,32 @@ def load_centralized_dataset(which_dataset):
     print("Full",len(y_true),"Benign",np.sum(y_true == 0),"Anomaly",np.sum(y_true == 1)) 
 
     #Exporting Datasets into .h files for MCU deployment
+    lenge = len(X_Validation) 
+
+    # --- Write the C Header File ---
+    filename = f"mcu_val_data.h"
+    print(f"Exporting {lenge} samples to {filename}...")
+
+    with open(filename, "w") as f:
+        f.write("/* Auto-generated TinyML Test Dataset */\n")
+        f.write("#pragma once\n\n")
+        
+        f.write(f"const int MCU_val_SAMPLES = {lenge};\n")
+        f.write(f"const int MCU_val_FEATURES = {X_Validation.shape[1]};\n\n")
+
+        # Write X data (Features)
+        f.write(f"const float mcu_val_x[{lenge}][{X_Validation.shape[1]}] = {{\n")
+        for i, row in enumerate(X_Validation):
+            # Format numbers to 6 decimal places to save string space
+            row_str = ", ".join([f"{val:.15f}" for val in row])
+            f.write(f"    {{{row_str}}}")
+            if i < lenge - 1:
+                f.write(",\n")
+            else:
+                f.write("\n")
+        f.write("};\n\n")
+
+
     lenge = len(X_test_full) 
 
     y_mcu = y_true
@@ -441,7 +465,7 @@ def load_centralized_dataset(which_dataset):
         f.write(f"const float mcu_test_x[{lenge}][{X_test_full.shape[1]}] = {{\n")
         for i, row in enumerate(X_test_full):
             # Format numbers to 6 decimal places to save string space
-            row_str = ", ".join([f"{val:.6f}" for val in row])
+            row_str = ", ".join([f"{val:.15f}" for val in row])
             f.write(f"    {{{row_str}}}")
             if i < lenge - 1:
                 f.write(",\n")
@@ -454,28 +478,8 @@ def load_centralized_dataset(which_dataset):
         y_str = ", ".join([str(int(val)) for val in y_mcu])
         f.write(y_str)
         f.write("\n};\n")
-    # --- Write the C Header File Calibration--- 
-    filename = f"calibration_data.h"    
-    lenge = len(calibration_split)
-   
-    with open(filename, "w") as f:
-        f.write("/* Auto-generated TinyML Test Dataset */\n")
-        f.write("#pragma once\n\n")
         
-        f.write(f"const int MCU_TEST_SAMPLES = {lenge};\n")
-        f.write(f"const int MCU_NUM_FEATURES = {calibration_split.shape[1]};\n\n")
-
-        # Write X data (Features)
-        f.write(f"const float mcu_test_x[{lenge}][{calibration_split.shape[1]}] = {{\n")
-        for i, row in enumerate(calibration_split):
-            # Format numbers to 6 decimal places to save string space
-            row_str = ", ".join([f"{val:.6f}" for val in row])
-            f.write(f"    {{{row_str}}}")
-            if i < lenge - 1:
-                f.write(",\n")
-            else:
-                f.write("\n")
-        f.write("};\n\n")
+    np.save("calibration_data.npy", calibration_split) # calibration dataset for tflite convert
 
     print("Export complete!")
 
@@ -607,6 +611,31 @@ def load_crossdataset(which_dataset):
     print("Full",len(y_true),"Benign",np.sum(y_true == 0),"Anomaly",np.sum(y_true == 1))
     
     #Exporting Datasets into .h files for MCU deployment
+    lenge = len(X_Validation) 
+
+    # --- Write the C Header File ---
+    filename = f"mcu_val_data.h"
+    print(f"Exporting {lenge} samples to {filename}...")
+
+    with open(filename, "w") as f:
+        f.write("/* Auto-generated TinyML Test Dataset */\n")
+        f.write("#pragma once\n\n")
+        
+        f.write(f"const int MCU_val_SAMPLES = {lenge};\n")
+        f.write(f"const int MCU_val_FEATURES = {X_Validation.shape[1]};\n\n")
+
+        # Write X data (Features)
+        f.write(f"const float mcu_val_x[{lenge}][{X_Validation.shape[1]}] = {{\n")
+        for i, row in enumerate(X_Validation):
+            # Format numbers to 6 decimal places to save string space
+            row_str = ", ".join([f"{val:.15f}" for val in row])
+            f.write(f"    {{{row_str}}}")
+            if i < lenge - 1:
+                f.write(",\n")
+            else:
+                f.write("\n")
+        f.write("};\n\n")
+        
     lenge = len(X_test_full) 
 
     y_mcu = y_true

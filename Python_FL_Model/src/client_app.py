@@ -43,9 +43,9 @@ def train(msg: Message, context: Context):
     partition = partition_id 
     
     """ which_dataset = 0 is CIC-BoTIoT; everything else is IoTID20 just like """
-    trainloader, validaton_loader, _ ,_, _,_,_ = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
+    #trainloader, validaton_loader, _ ,_, _,_,_ = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
     """ which_dataset 0 for Training CIC-BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing CIC-BoTIoT """
-    #trainloader, validaton_loader, _ ,_, _,_,_ = load_cross_data(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
+    trainloader, validaton_loader, _ ,_, _,_,_ = load_cross_data(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
 
     # Call the training function
     train_loss, val_loss = train_fn(
@@ -96,9 +96,9 @@ def evaluate(msg: Message, context: Context):
     partition = partition_id 
     
     """ which_dataset = 0 is CIC-BoTIoT; everything else is IoTID20 """
-    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset)  # do i need dynamic batchsize? WiP
+    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset)  # do i need dynamic batchsize? WiP
     """ which_dataset 0 for Training CIC-BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing CIC-BoTIoT """
-    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_cross_data(partition, num_partitions,which_dataset=which_dataset)
+    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_cross_data(partition, num_partitions,which_dataset=which_dataset)
      
     # Call the evaluation function
     threshold, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,_,_,_ = test_fn(
@@ -143,16 +143,16 @@ def evaluate(msg: Message, context: Context):
     # Return the evaluation metrics
     metrics = {
         #"threshold": float(threshold),
-        #"fprpercentile": float("{:.2f}".format(fprpercentile)),
-        #"fnrpercentile": float("{:.2f}".format(fnrpercentile)),
-        #"FPR DT": float("{:.2f}".format(fprdt)), #remove this for no dt
-       # "FNR DT": float("{:.2f}".format(fnrdt)), #remove this for no dt
-        #"PR AUC": float("{:.2f}".format(a)), 
-        #"ROC AUC DT": float("{:.2f}".format(b)), #remove this for no dt
-        #"ROC AUC Error": float("{:.2f}".format(c)),
-       # "PR AUC Error": float("{:.2f}".format(d)),
-       # "Precision":float(("{:.2f}".format(pr_precísion))),
-        "avg_testing_time": float("{:.2f}".format(testing_time)),  # New metric
+        #"fprpercentile": float("{:.4f}".format(fprpercentile)),
+        #"fnrpercentile": float("{:.4f}".format(fnrpercentile)),
+        #"FPR DT": float("{:.4f}".format(fprdt)), #remove this for no dt
+       # "FNR DT": float("{:.4f}".format(fnrdt)), #remove this for no dt
+        #"PR AUC": float("{:.4f}".format(a)), 
+        #"ROC AUC DT": float("{:.4f}".format(b)), #remove this for no dt
+        #"ROC AUC Error": float("{:.4f}".format(c)),
+       # "PR AUC Error": float("{:.4f}".format(d)),
+       # "Precision":float(("{:.4f}".format(pr_precísion))),
+        "avg_testing_time": float("{:.4f}".format(testing_time)),  # New metric
         "num-examples": len(y_true),
     }
     metric_record = MetricRecord(metrics)
