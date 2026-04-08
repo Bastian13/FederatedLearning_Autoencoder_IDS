@@ -17,6 +17,8 @@ import psutil
 from src.dataset_load import load_centralized_dataset,load_crossdataset
 import os
 import time
+
+
 class Autoencoder(nn.Module):
     def __init__(self, input_dim,dropout_rate=0.4): 
         super(Autoencoder, self).__init__()
@@ -52,11 +54,11 @@ class Autoencoder(nn.Module):
         encoded = self.encoder(x)
         decoded = self.decoder(encoded)
         return decoded
-rng = np.random.default_rng(seed=42)
 
 
 def train(net, trainloader, validaton_loader,partition_id, epochs, lr,mu ,device):
     """Train the model on the training set."""
+
     print_memory_usage()
     net.to(device)
     global_params = copy.deepcopy(net).parameters()
@@ -131,6 +133,7 @@ def train(net, trainloader, validaton_loader,partition_id, epochs, lr,mu ,device
 
 def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #remove this for no dt
     """Validate the model on the test set."""
+
     print_memory_usage()
     net.eval()
     print("testing device", partition_id)
@@ -176,7 +179,7 @@ def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #
     ])  # 8D total with 67 architecture, new architecture 8d since bottleneck is 6
     
     # DecisionTree (DT), alternative to unsupervised Thresholding,small for Tinyml deployment
-    dt = DecisionTreeClassifier(max_depth=4,class_weight='balanced',random_state=42,min_samples_leaf=20)  # 16 leaves max  #remove this for no dt
+    dt = DecisionTreeClassifier(max_depth=4,class_weight='balanced',min_samples_leaf=20)  # 16 leaves max  #remove this for no dt
     
     X_features_test = np.column_stack([X_test_encoded, errors_full_norm, stats_test]) #remove this for no dt
     # DT fit and predict
@@ -193,6 +196,7 @@ def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #
 
 def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     """Evaluate model on central data."""
+
     start_time = time.time()
 
     # Load the model and initialize it with the received weights
@@ -200,15 +204,15 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
 
     model.load_state_dict(arrays.to_torch_state_dict())
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cpu")
     model.to(device)
     
     # Load data set
     # which_dataset 2 for BoTIoT; 3 for IoTID20 just like client
 
-    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_centralized_dataset(which_dataset= 1) #remove this for no dt
+    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_centralized_dataset(which_dataset= 0) #remove this for no dt
     # which_dataset 0 for Training BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing BoTIoT just like client
-    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_crossdataset(which_dataset = 0)  #remove this for no dt
+    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_crossdataset(which_dataset = 0)  #remove this for no dt
 
     # Evaluate the global model on the test set
     threshold_ae, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,dt,mu,sigma = test( #remove this for no dt
@@ -311,6 +315,7 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
 
     end_time = time.time()
     testing_time = end_time - start_time
+    print(testing_time)
     # Construct and return reply Message
     # Return the evaluation metrics
     return MetricRecord({

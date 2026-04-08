@@ -12,12 +12,13 @@ from src.dataset_load import load_cross_data,load_mono_dataset
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
-import numpy as np
 
 from sklearn.metrics import roc_auc_score, confusion_matrix, precision_recall_curve,roc_curve,auc,average_precision_score,classification_report
 
 import time
 # Flower ClientApp
+torch.use_deterministic_algorithms(True)
+
 app = ClientApp()
 
 
@@ -25,6 +26,7 @@ app = ClientApp()
 def train(msg: Message, context: Context):
     """Train the model on local data."""
     # Training Time
+
     start_time = time.time()
 
     # Load the model and initialize it with the received weights
@@ -32,7 +34,7 @@ def train(msg: Message, context: Context):
     model = Autoencoder(input_dim)
     model.load_state_dict(msg.content["arrays"].to_torch_state_dict())
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cpu")
     model.to(device)
     
     # Load the data
@@ -40,13 +42,14 @@ def train(msg: Message, context: Context):
     num_partitions = context.node_config["num-partitions"]
     which_dataset: int = context.run_config["which_dataset"]
 
+
     partition = partition_id 
     
     """ which_dataset = 0 is CIC-BoTIoT; everything else is IoTID20 just like """
-    #trainloader, validaton_loader, _ ,_, _,_,_ = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
+    trainloader, validaton_loader, _ ,_, _,_,_ = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
     """ which_dataset 0 for Training CIC-BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing CIC-BoTIoT """
-    trainloader, validaton_loader, _ ,_, _,_,_ = load_cross_data(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
-
+    #trainloader, validaton_loader, _ ,_, _,_,_ = load_cross_data(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
+    
     # Call the training function
     train_loss, val_loss = train_fn(
         model, # Model Autoencoder
@@ -76,6 +79,7 @@ def train(msg: Message, context: Context):
 def evaluate(msg: Message, context: Context):
     """Evaluate the model on local data."""
     # Testing Time
+
     start_time = time.time()
 
     # Load the model and initialize it with the received weights
@@ -85,7 +89,7 @@ def evaluate(msg: Message, context: Context):
     model.load_state_dict(msg.content["arrays"].to_torch_state_dict())
 
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cpu")
     model.to(device)
 
     # Load the data
@@ -96,9 +100,9 @@ def evaluate(msg: Message, context: Context):
     partition = partition_id 
     
     """ which_dataset = 0 is CIC-BoTIoT; everything else is IoTID20 """
-    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset)  # do i need dynamic batchsize? WiP
+    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset)  # do i need dynamic batchsize? WiP
     """ which_dataset 0 for Training CIC-BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing CIC-BoTIoT """
-    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_cross_data(partition, num_partitions,which_dataset=which_dataset)
+    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_cross_data(partition, num_partitions,which_dataset=which_dataset)
      
     # Call the evaluation function
     threshold, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,_,_,_ = test_fn(

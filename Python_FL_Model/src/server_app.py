@@ -4,17 +4,16 @@ import torch
 from flwr.app import ArrayRecord, ConfigRecord, Context
 from flwr.serverapp import Grid, ServerApp
 from flwr.serverapp.strategy import FedAvg, FedProx
-
+import random
 from src.task import Autoencoder,global_evaluate
-
 # Create ServerApp
+
 app = ServerApp()
 
 
 @app.main()
 def main(grid: Grid, context: Context) -> None:
     """Main entry point for the ServerApp."""
-
     # Read run config
     fraction_train: float = context.run_config["fraction-train"]
     num_rounds: int = context.run_config["num-server-rounds"]
