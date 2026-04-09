@@ -1,5 +1,17 @@
 # TinyFL Model: ML Based IDS for IoT Botnet Detection
 
+![system_arch](assets/system_arch.png)
+
+- [TinyFL Model: ML Based IDS for IoT Botnet Detection](#tinyfl-model-ml-based-ids-for-iot-botnet-detection)
+  - [Deploying the Model on PC / Singular Device](#deploying-the-model-on-pc--singular-device)
+  - [Deploying the Model on Embedded Devices (Raspberry Pis etc.)](#deploying-the-model-on-embedded-devices-raspberry-pis-etc)
+    - [Launching the Flower SuperLink](#launching-the-flower-superlink)
+    - [Connecting Flower SuperNodes](#connecting-flower-supernodes)
+    - [Run the Flower App](#run-the-flower-app)
+  - [Deploying the Model for inference on ESP32](#deploying-the-model-for-inference-on-esp32)
+    - [Deploying the Model on ESP32 after a Simulation run](#deploying-the-model-on-esp32-after-a-simulation-run)
+      - [pytorch -\> onnx -\>tf -\>tflite with quant-\>.h](#pytorch---onnx--tf--tflite-with-quant-h)
+
 ## Deploying the Model on PC / Singular Device
 
 Go to the Folder `Python_FL_Model` and follow the `README`
