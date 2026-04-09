@@ -22,7 +22,9 @@ dependencies = [
     "scikit-learn",
     "numpy",
     "pandas",
-    "psutil"
+    "psutil",
+    "onnx==1.14.1",
+    "emlearn"
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -44,7 +46,7 @@ local-epochs = 3 #for epochs
 lr = 5e-4
 mu = 0.1 #change fedprox mu
 input-dim = 67 
-which_dataset = 1 #for which Dataset to train and test
+which_dataset = 0 #for which Dataset to train and test
 # Default federation to use when running the app
 [tool.flwr.federations]
 default = "local-simulation"
@@ -55,7 +57,7 @@ options.num-supernodes = 4 #for how many client train and test
 
 # Remote federation example for use with SuperLink
 [tool.flwr.federations.remote-federation]
-address = "<insert your IP>"
+address = "0.0.0.0"
 insecure = true  # Remove this line to enable TLS
 #options.num-supernodes = 2
 
