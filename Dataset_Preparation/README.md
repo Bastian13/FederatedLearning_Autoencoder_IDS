@@ -5,7 +5,7 @@ Download CiC-BoTIoT: https://espace.library.uq.edu.au/view/UQ:c80fccd
 
 ## Split in Benign and Anomaly
 
-run 'split_while_dataset.py' 2x times per Datasets. To split into pure Benign and pure Anomaly
+run 'split_whole_dataset.py' 2x times per Datasets. To split into pure Benign and pure Anomaly
 
 ## Split in á 1000 Sample splits
 
