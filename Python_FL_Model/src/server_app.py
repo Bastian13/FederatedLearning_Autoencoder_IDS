@@ -4,7 +4,6 @@ import torch
 from flwr.app import ArrayRecord, ConfigRecord, Context
 from flwr.serverapp import Grid, ServerApp
 from flwr.serverapp.strategy import FedAvg, FedProx
-import random
 from src.task import Autoencoder,global_evaluate
 # Create ServerApp
 
@@ -20,6 +19,8 @@ def main(grid: Grid, context: Context) -> None:
     lr: float = context.run_config["lr"]
     mu: float = context.run_config["mu"]
     input_dim: int = context.run_config["input-dim"]
+    #current_round: int = context.run_config["num-server-rounds"]
+
     #which_dataset: int = context.run_config["which_dataset"]
     
     # Load global model

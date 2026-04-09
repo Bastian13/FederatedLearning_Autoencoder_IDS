@@ -9,14 +9,15 @@ import torch.nn as nn
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import numpy as np
-from sklearn.metrics import classification_report, confusion_matrix, f1_score,roc_auc_score, average_precision_score, matthews_corrcoef
+from sklearn.metrics import classification_report, confusion_matrix, f1_score,roc_auc_score, average_precision_score, matthews_corrcoef,accuracy_score
 import matplotlib.pyplot as plt
 import copy
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, plot_tree
 import psutil
 from src.dataset_load import load_centralized_dataset,load_crossdataset
 import os
 import time
+import emlearn
 
 
 class Autoencoder(nn.Module):
@@ -61,7 +62,7 @@ def train(net, trainloader, validaton_loader,partition_id, epochs, lr,mu ,device
 
     print_memory_usage()
     net.to(device)
-    global_params = copy.deepcopy(net).parameters()
+    global_params = [p.detach().clone() for p in net.parameters()]
     optimizer = torch.optim.AdamW(net.parameters(),lr=lr, weight_decay=0.05) # weight_decay L2 regularization
     criterion = nn.MSELoss()
     print("training device", partition_id)
@@ -75,19 +76,18 @@ def train(net, trainloader, validaton_loader,partition_id, epochs, lr,mu ,device
         net.train()
         train_loss = 0
         for data in trainloader:
-            proximal_term = 0
             inputs = data[0].to(device)
             optimizer.zero_grad()
             outputs = net(inputs)
             #loss = criterion(outputs, inputs)
             
-            #FedProx
+            #FedProx           
+            proximal_term = 0
             for local_weights, global_weights in zip(net.parameters(), global_params):
-                 proximal_term += (local_weights - global_weights).norm(2)
-            loss = criterion(outputs, inputs) + (mu / 2) * proximal_term
+                 proximal_term += torch.sum((local_weights - global_weights.to(device))**2)
+            loss = criterion(outputs, inputs) + (mu / 2.0) * proximal_term
             
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(net.parameters(), max_norm=1.0)
             optimizer.step()
             train_loss += loss.item()
         avg_train_loss = train_loss/len(trainloader)
@@ -150,48 +150,51 @@ def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #
         # Validation reconstruction errors
         X_val_tensor = torch.FloatTensor(X_Validation).to(device)
         recon_val = net(X_val_tensor)
-        errors_val = torch.mean(torch.abs(X_val_tensor - recon_val), dim=1).cpu().numpy()
+        errors_val = torch.mean(torch.square(X_val_tensor - recon_val), dim=1).cpu().numpy()
 
         # reconstruction error for classifier
         recon_dt = net(X_train_dt)
-        errors_dt = torch.mean(torch.abs(X_train_dt - recon_dt), dim=1).cpu().numpy() #remove this for no dt
+        errors_dt = torch.mean(torch.square(X_train_dt - recon_dt), dim=1).cpu().numpy() #remove this for no dt
 
         dt_stats = np.std(X_train_dt.cpu().numpy(), axis=1) #remove this for no dt
         
         # reconstruction error of full Test set
         X_test_full_tensor = X_test_full
         recon_full = net(X_test_full_tensor)
-        errors_full = torch.mean(torch.abs(X_test_full_tensor - recon_full), dim=1).cpu().numpy()
+        errors_full = torch.mean(torch.square(X_test_full_tensor - recon_full), dim=1).cpu().numpy()
         stats_test = np.std(X_test_full_tensor.cpu().numpy(), axis=1)
         
         mu_val = np.mean(errors_val) #remove this for no dt
         sigma_val = np.std(errors_val) + 1e-8  #remove this for no dt
     # For training (used in classifier). Z-score normalisation
-    errors_dt_norm = (errors_dt - mu_val) / sigma_val #remove this for no dt
+    errors_dt_norm = errors_dt #remove this for no dt
 
     # For testing (used in classifier). Z-score normalisation
-    errors_full_norm = (errors_full - mu_val) / sigma_val  #remove this for no dt
+    errors_full_norm = errors_full   #remove this for no dt
 
     X_features = np.column_stack([ #remove this for no dt
-    X_train_encoded,  # AE latent
-    errors_dt_norm,  # Recon error
-    dt_stats  # Flow stats
+    X_train_encoded *10000,  # AE latent
+    errors_dt_norm*10000,  # Recon error
+    dt_stats*10000  # Flow stats
     ])  # 8D total with 67 architecture, new architecture 8d since bottleneck is 6
     
     # DecisionTree (DT), alternative to unsupervised Thresholding,small for Tinyml deployment
-    dt = DecisionTreeClassifier(max_depth=4,class_weight='balanced',min_samples_leaf=20)  # 16 leaves max  #remove this for no dt
-    
-    X_features_test = np.column_stack([X_test_encoded, errors_full_norm, stats_test]) #remove this for no dt
+    dt = DecisionTreeClassifier(max_depth=4,class_weight='balanced')  # 16 leaves max  #remove this for no dt
+    dt_tinyml = DecisionTreeClassifier(max_depth=4,class_weight='balanced')  # 16 leaves max  #remove this for no dt
+
+    X_features_test = np.column_stack([X_test_encoded*10000, errors_full_norm*10000, stats_test*10000]) #remove this for no dt
     # DT fit and predict
     dt.fit(X_features, y_dt)  #remove this for no dt
     y_pred = dt.predict(X_features_test) #remove this for no dt
     y_proba = dt.predict_proba(X_features_test)[:, 1]  #remove this for no dt
     # Unsupervised Thresholding, Percentile
-    threshold_percentile = np.percentile(errors_val,80)
+    threshold_percentile = np.percentile(errors_val,85)
     print("Threshold percentile 85")
     y_pred_percentile = (errors_full > threshold_percentile).astype(int)
     print_memory_usage()
-    return threshold_percentile, y_pred_percentile , errors_full, errors_val,y_pred,y_proba,dt,mu_val,sigma_val #remove this for no dt
+    X_train_int16 = np.clip(X_features, -32768, 32767).astype(np.int16)
+    dt_tinyml.fit(X_train_int16, y_dt)
+    return threshold_percentile, y_pred_percentile , errors_full, errors_val,y_pred,y_proba,dt,mu_val,sigma_val,dt_tinyml #remove this for no dt
 
 
 def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
@@ -210,15 +213,16 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     # Load data set
     # which_dataset 2 for BoTIoT; 3 for IoTID20 just like client
 
-    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_centralized_dataset(which_dataset= 0) #remove this for no dt
+    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_centralized_dataset(which_dataset= 0) #remove everythin with dt for no dt
     # which_dataset 0 for Training BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing BoTIoT just like client
-    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_crossdataset(which_dataset = 0)  #remove this for no dt
+    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_crossdataset(which_dataset = 1)  #remove everythin with dt for no dt
 
     # Evaluate the global model on the test set
-    threshold_ae, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,dt,mu,sigma = test( #remove this for no dt
+    threshold_ae, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,dt,mu,sigma,dt_tinyml = test( #remove everythin with dt for no dt
         model,
         X_test_full, X_test_validation, 1000,
-        device, X_train_dt,y_dt #remove this for no dt
+        device, 
+        X_train_dt,y_dt #remove this for no dt
     )
 
     # Metrics
@@ -277,41 +281,16 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     print(f"False Discovery Rate DT: {fdr_dt:.4f}", f"False Discovery Rate percentile: {fdr_percentile:.4f}")
     print("MCC DT", mcc_dt, "MCC percentile", mcc_percentile)
     
-    # export DecisionTree for inference on ESP32 
-    def export_tree_to_c(tree, feature_names, filename="tree_model.h"): #remove this for no dt
-          tree_ = tree.tree_
-
-          with open(filename, "w") as f:
-              f.write("int predict_dt(float features[]) {\n")
-
-              def recurse(node, depth):
-                  indent = "    " * depth
-                
-                  if tree_.feature[node] != -2:
-                      feature = tree_.feature[node]
-                      threshold = tree_.threshold[node]
-                    
-                      f.write(f"{indent}if (features[{feature}] <= {threshold:.15f}f) {{\n")
-                      recurse(tree_.children_left[node], depth + 1)
-                      f.write(f"{indent}}} else {{\n")
-                      recurse(tree_.children_right[node], depth + 1)
-                      f.write(f"{indent}}}\n")
-                  else:
-                      class_id = tree_.value[node].argmax()
-                      f.write(f"{indent}return {class_id};\n")
-
-              recurse(0, 1)
-              f.write("}\n")
-
-          print(f"Tree exported to {filename}")
-    export_tree_to_c(dt, feature_names=["score"])
+    c_model = emlearn.convert(dt_tinyml, method='inline')
+    c_model.save(file='tree_model.h', name='my_model')
     # for ESP32 inference, values used for Testing
     with open("values.h", "w") as f:            
               f.write(f"const float pymu_val = {mu}f;\n")
               f.write(f"const float pysigma_val = {sigma}f;\n")
               f.write(f"const float pythreshold = {threshold_ae}f;\n")
 
-
+    acc_ae = accuracy_score(y_true,y_pred_percentile)
+    acc_dt = accuracy_score(y_true,y_pred) #remove this for no dt
 
     end_time = time.time()
     testing_time = end_time - start_time
@@ -319,7 +298,7 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     # Construct and return reply Message
     # Return the evaluation metrics
     return MetricRecord({
-        "threshold": float(threshold_ae),
+        #"threshold": float(threshold_ae),
         "FPR AE": float("{:.4f}".format(fprpercentile)),
         "FNR AE": float("{:.4f}".format(fnrpercentile)),
         "MCC DT": float("{:.4f}".format(mcc_dt)), #remove this for no dt
@@ -338,7 +317,9 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
         "FDR AE": float("{:.4f}".format(fdr_percentile)),                
         "Confusion Matrix DT": cm_dt.flatten().tolist(), #remove this for no dt
         "Confusion Matrix AE": cmpercentile.flatten().tolist(),
-        "time": float(("{:.4f}".format(testing_time)))
+        "Accuracy AE": float("{:.4f}".format(acc_ae)),
+        "Accuracy DT": float("{:.4f}".format(acc_dt)),  
+        #"time": float(("{:.4f}".format(testing_time)))
     })
     
 def intrusion_detection_capability(y_true, y_pred):

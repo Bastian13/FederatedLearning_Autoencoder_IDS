@@ -105,7 +105,7 @@ def evaluate(msg: Message, context: Context):
     #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_cross_data(partition, num_partitions,which_dataset=which_dataset)
      
     # Call the evaluation function
-    threshold, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,_,_,_ = test_fn(
+    threshold, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,_,_,_,_ = test_fn(
         model, # Autoencoder
         X_test_full, X_test_validation, # Data for Testing
         partition, # Partition ID
