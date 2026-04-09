@@ -1,4 +1,4 @@
-# Python_FL_Model: A Flower / PyTorch app
+# TinyFL Model: ML Based IDS for IoT Botnet Detection
 
 ## Deploying the Model on PC / Singular Device
 
