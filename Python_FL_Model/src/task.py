@@ -173,16 +173,16 @@ def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #
     errors_full_norm = errors_full   #remove this for no dt
 
     X_features = np.column_stack([ #remove this for no dt
-    X_train_encoded *10000,  # AE latent
-    errors_dt_norm*10000,  # Recon error
-    dt_stats*10000  # Flow stats
+    X_train_encoded *10000,  # AE latent * 10000 because int16 would make 0.006 to 0
+    errors_dt_norm*10000,  # Recon error * 10000 because int16 would make 0.006 to 0
+    dt_stats*10000  # Flow stats * 10000 because int16 would make 0.006 to 0
     ])  # 8D total with 67 architecture, new architecture 8d since bottleneck is 6
     
     # DecisionTree (DT), alternative to unsupervised Thresholding,small for Tinyml deployment
     dt = DecisionTreeClassifier(max_depth=4,class_weight='balanced')  # 16 leaves max  #remove this for no dt
-    dt_tinyml = DecisionTreeClassifier(max_depth=4,class_weight='balanced')  # 16 leaves max  #remove this for no dt
+    dt_tinyml = DecisionTreeClassifier(max_depth=4,class_weight='balanced')  # 16 leaves max  #remove this for no dt; This is for exporting to MCU
 
-    X_features_test = np.column_stack([X_test_encoded*10000, errors_full_norm*10000, stats_test*10000]) #remove this for no dt
+    X_features_test = np.column_stack([X_test_encoded*10000, errors_full_norm*10000, stats_test*10000]) #remove this for no dt 
     # DT fit and predict
     dt.fit(X_features, y_dt)  #remove this for no dt
     y_pred = dt.predict(X_features_test) #remove this for no dt
@@ -192,9 +192,9 @@ def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #
     print("Threshold percentile 85")
     y_pred_percentile = (errors_full > threshold_percentile).astype(int)
     print_memory_usage()
-    X_train_int16 = np.clip(X_features, -32768, 32767).astype(np.int16)
-    dt_tinyml.fit(X_train_int16, y_dt)
-    return threshold_percentile, y_pred_percentile , errors_full, errors_val,y_pred,y_proba,dt,mu_val,sigma_val,dt_tinyml #remove this for no dt
+    X_train_int16 = np.clip(X_features, -32768, 32767).astype(np.int16) # remove this for no dt
+    dt_tinyml.fit(X_train_int16, y_dt) # remove this for no dt
+    return threshold_percentile, y_pred_percentile , errors_full, errors_val,y_pred,y_proba,dt,dt_tinyml #remove everything with dt for no dt
 
 
 def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
@@ -218,7 +218,7 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_crossdataset(which_dataset = 1)  #remove everythin with dt for no dt
 
     # Evaluate the global model on the test set
-    threshold_ae, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,dt,mu,sigma,dt_tinyml = test( #remove everythin with dt for no dt
+    threshold_ae, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,dt,dt_tinyml = test( #remove everythin with dt for no dt
         model,
         X_test_full, X_test_validation, 1000,
         device, 
@@ -283,11 +283,7 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     
     c_model = emlearn.convert(dt_tinyml, method='inline')
     c_model.save(file='tree_model.h', name='my_model')
-    # for ESP32 inference, values used for Testing
-    with open("values.h", "w") as f:            
-              f.write(f"const float pymu_val = {mu}f;\n")
-              f.write(f"const float pysigma_val = {sigma}f;\n")
-              f.write(f"const float pythreshold = {threshold_ae}f;\n")
+
 
     acc_ae = accuracy_score(y_true,y_pred_percentile)
     acc_dt = accuracy_score(y_true,y_pred) #remove this for no dt
@@ -318,7 +314,7 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
         "Confusion Matrix DT": cm_dt.flatten().tolist(), #remove this for no dt
         "Confusion Matrix AE": cmpercentile.flatten().tolist(),
         "Accuracy AE": float("{:.4f}".format(acc_ae)),
-        "Accuracy DT": float("{:.4f}".format(acc_dt)),  
+        "Accuracy DT": float("{:.4f}".format(acc_dt)),  #remove this for no dt
         #"time": float(("{:.4f}".format(testing_time)))
     })
     
