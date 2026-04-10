@@ -5,14 +5,14 @@ Download [CiC-BoTIoT](https://espace.library.uq.edu.au/view/UQ:c80fccd)
 
 ## Split in Benign and Anomaly
 
-run 'split_whole_dataset.py' 2x times per Datasets. To split into pure Benign and pure Anomaly
+Run `python3 split_whole_dataset.py` for each dataset. To split into benign and malicious
 
 ## Split in á 1000 Sample splits
 
-run 'split_in_splits.py' for each Subset of pure Benign and Anomaly.
+run `python3 split_in_splits.py` for each subset of benign and malicious.
 
 ## Split in á 1000 Samples for Training and Server eval
 
-run 'split_in_splits_sorted.py' for pure Benign Subset of each Dataset.
+Run ` python3 split_in_splits_sorted.py` for pure benign subset of each dataset.
 
-the '_glo' files are used in Server Eval and the resulting Splits used for Training.
+`_glo` files are used in server evaluation and the resulting splits used for training.
