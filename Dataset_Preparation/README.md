@@ -1,7 +1,7 @@
 # Prepare the Dataset
 ## Download Dataset
-Download IoTID20: https://sites.google.com/view/iot-network-intrusion-dataset/home
-Download CiC-BoTIoT: https://espace.library.uq.edu.au/view/UQ:c80fccd
+Download [IoTID20](https://sites.google.com/view/iot-network-intrusion-dataset/home) <br>
+Download [CiC-BoTIoT](https://espace.library.uq.edu.au/view/UQ:c80fccd)
 
 ## Split in Benign and Anomaly
 
