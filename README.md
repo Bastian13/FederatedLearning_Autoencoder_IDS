@@ -74,18 +74,22 @@ flwr run . embedded-federation
 
 ### Deploying the Model on ESP32 after a Simulation run 
 
-Take the resulting Files `final_model.pt`,`calibration_data.h`,`tree_model.h`,`values.h`,`mcu_test_data.h` from the folder `Python_FL_Model`.
-Copy `tree_model.h`,`values.h` and `mcu_test_data.h` into the file `hello_world_main.cpp` from the folder `HELLO_WORLD`. The values in the files are hardcoded in `hello_world_main.cpp`.
-Copy `final_model.pt` and `calibration_data.h` into the folder `Model_converter`.
+Take the resulting Files `final_model.pt`,`calibration_data.npy`,`tree_model.h`,`mcu_test_data.h`,`mcu_val_data.h` from the folder `Python_FL_Model`.
+Copy `tree_model.h`, `mcu_test_data.h` and ,`mcu_val_data.h` into the folder `ESP32_Model/main` from the folder `TINYML`.
+Copy `final_model.pt` and `calibration_data.npy` into the folder `Model_converter`.
 
 #### pytorch -> onnx ->tf ->tflite with quant->.h
 create new venv, look at tinyml_env2
 1. take final_model.pt
-2. drag it into if_and_auto2/if_and_auto2 
-3. run converter_onnx.py do it both for normal model and encoder
-4. new terminal with tinyml_env2 as enviroment ; onnx2tf -i model.onnx -o der ziel ordner in terminal(glaube ich)
-5. take calibration_data.h and copy array into X_calibration in converter_tf_tflite_fix_hard.py and then run it
+2. drag it into TinyML_Conversion 
+3. run converter_onnx.py do it both for normal model and encoder. With an enviroment that has both torch and onnx.
+4. new terminal with tinyml_env2 as enviroment run:
+```bash
+onnx2tf -i model.onnx -o saved_model
+onnx2tf -i model_encoder.onnx -o saved_model_enc
+```
+5. run converter_tf_tflite_fix_hard.py
 6. run converter_tflite_c.py
-7. copy the files `model.h` and `model_encoder.h` into the folder `HELLO_WORLD/main`
+7. copy the files `model.h` and `model_encoder.h` into the folder `TINYML/main`
 
 
