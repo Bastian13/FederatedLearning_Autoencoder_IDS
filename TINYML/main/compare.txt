@@ -1,0 +1,970 @@
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.029885048670694234, 'val_loss': 0.037154128476977355, 'avg_training_time': 0.715}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=33784) 
+(ClientAppActor pid=33784) [[118  32]
+(ClientAppActor pid=19692) 1000
+(ClientAppActor pid=19692)
+(ClientAppActor pid=19692) [[132  18]
+(ClientAppActor pid=34728)
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.008767920546233654, 'threshold tr_star': 0.19081361033022404, 'fpr90': 0.625, 'fnr90': 0.0925, 'FPR Class': 0.39249999999999996, 'FNR Class': 0.2175, 'ROC AUC': 0.71, 'AUC Error': 0.7375, 'avg_testing_time': 0.05}
+INFO :      Global evaluation
+(ClientAppActor pid=19692) 
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[108  42]
+ [ 54  96]]
+              precision    recall  f1-score   support
+
+         0.0       0.67      0.72      0.69       150
+         1.0       0.70      0.64      0.67       150
+
+    accuracy                           0.68       300
+   macro avg       0.68      0.68      0.68       300
+weighted avg       0.68      0.68      0.68       300
+
+ROC AUC 0.6778 ROC AUC Error 0.7016444444444445
+Fpr90 0.53 Fnr90 0.17 FPR Class 0.28 FNR Class 0.36
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.008815080858767033, 'threshold tr_star': 0.07039138674736023, 'fpr90': 0.53, 'fnr90': 0.17, 'FPR Class': 0.28, 'FNR Class': 
+0.36, 'ROC AUC': 0.68, 'AUC Error': 0.7, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 4/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) Train Loss: 0.025078 | Val Loss: 0.063352 [repeated 11x across cluster]
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.02282505084682877, 'val_loss': 0.030761752140242606, 'avg_training_time': 0.7200000000000001}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) testing device 3 [repeated 11x across cluster]
+(ClientAppActor pid=19692) Confusion Matrix Classify and Device Number 3: [repeated 10x across cluster]
+(ClientAppActor pid=19692) [[ 27 123] [repeated 2x across cluster]
+(ClientAppActor pid=19692)  [ 48 102]] [repeated 10x across cluster]
+(ClientAppActor pid=19692) Device 3 ROC AUC 0.3320666666666667 ROC AUC Error 0.682288888888889 [repeated 10x across cluster]
+(ClientAppActor pid=19692) Device 3 Fpr90 0.55 Fnr90 0.22 FPR Class 0.82 FNR Class 0.32 [repeated 10x across cluster]
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=34728) 
+(ClientAppActor pid=34728) [[122  28]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[128  22]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.00404184777289629, 'threshold tr_star': 0.18151232041418552, 'fpr90': 0.5525, 'fnr90': 0.08249999999999999, 'FPR 
+Class': 0.31749999999999995, 'FNR Class': 0.1675, 'ROC AUC': 0.7424999999999999, 'AUC Error': 0.7424999999999999, 'avg_testing_time': 0.042499999999999996}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+(ClientAppActor pid=19692)
+(ClientAppActor pid=19692) [[126  24]
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[ 44 106]
+ [ 43 107]]
+              precision    recall  f1-score   support
+
+         0.0       0.51      0.29      0.37       150
+         1.0       0.50      0.71      0.59       150
+
+    accuracy                           0.50       300
+   macro avg       0.50      0.50      0.48       300
+weighted avg       0.50      0.50      0.48       300
+
+ROC AUC 0.4169555555555556 ROC AUC Error 0.7234222222222223
+Fpr90 0.51 Fnr90 0.13 FPR Class 0.71 FNR Class 0.29
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0040189651772379875, 'threshold tr_star': 0.06183246523141861, 'fpr90': 0.51, 'fnr90': 0.13, 'FPR Class': 0.71, 'FNR Class': 0.29, 'ROC AUC': 0.42, 'AUC Error': 0.72, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 5/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.018521419030148537, 'val_loss': 0.026987448917352594, 'avg_training_time': 0.7125}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=34728) 
+(ClientAppActor pid=34728) [[115  35]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[120  30]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[134  16]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.001823095342842862, 'threshold tr_star': 0.17490777373313904, 'fpr90': 0.5225, 'fnr90': 0.36250000000000004, 'FPR Class': 0.25, 'FNR Class': 0.22749999999999998, 'ROC AUC': 0.7650000000000001, 'AUC Error': 0.5774999999999999, 'avg_testing_time': 0.0475}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[126  24]
+ [ 61  89]]
+              precision    recall  f1-score   support
+
+         0.0       0.67      0.84      0.75       150
+         1.0       0.79      0.59      0.68       150
+
+    accuracy                           0.72       300
+   macro avg       0.73      0.72      0.71       300
+weighted avg       0.73      0.72      0.71       300
+
+ROC AUC 0.6383555555555556 ROC AUC Error 0.6137333333333334
+Fpr90 0.33 Fnr90 0.32 FPR Class 0.16 FNR Class 0.41
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0017785420641303062, 'threshold tr_star': 0.056338123977184296, 'fpr90': 0.33, 'fnr90': 0.32, 'FPR Class': 0.16, 'FNR Class': 0.41, 'ROC AUC': 0.64, 'AUC Error': 0.61, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 6/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.016424095060598724, 'val_loss': 0.02523811359424144, 'avg_training_time': 0.6974999999999999}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) load_data_TonIoT [repeated 24x across cluster]
+(ClientAppActor pid=19692) Before Training 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=19692) Before Testing 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=19692) Testing 1000 [repeated 24x across cluster]
+(ClientAppActor pid=19692) After Training 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=19692) After Testing 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=19692) TinyML Selection: Using 11 features: ['TotLen Fwd Pkts', 'TotLen Bwd Pkts', 'Flow Byts/s', 'Flow Pkts/s', 'Fwd Pkts/s', 'Pkt Len Var', 'Pkt Size Avg', 'Subflow Fwd Byts', 'Init Bwd Win Byts', 'Subflow Bwd Byts', 'Label'] [repeated 24x across cluster]
+(ClientAppActor pid=19692) Full 300 Benign 150 Anomaly 150 [repeated 24x across cluster]
+(ClientAppActor pid=19692) training device 3 [repeated 12x across cluster]
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[126  24]
+(ClientAppActor pid=19692) Train Loss: 0.012391 | Val Loss: 0.050620 [repeated 12x across cluster]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[109  41]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[118  32]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[124  26]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.0012355964281596243, 'threshold tr_star': 0.1706267148256302, 'fpr90': 0.3875, 'fnr90': 0.4125, 'FPR Class': 0.2025, 'FNR Class': 0.22500000000000003, 'ROC AUC': 0.8, 'AUC Error': 0.555, 'avg_testing_time': 0.0475}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[136  14]
+ [ 61  89]]
+              precision    recall  f1-score   support
+
+         0.0       0.69      0.91      0.78       150
+         1.0       0.86      0.59      0.70       150
+
+    accuracy                           0.75       300
+   macro avg       0.78      0.75      0.74       300
+weighted avg       0.78      0.75      0.74       300
+
+ROC AUC 0.8282666666666667 ROC AUC Error 0.524
+Fpr90 0.59 Fnr90 0.4 FPR Class 0.09 FNR Class 0.41
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0012010603677481413, 'threshold tr_star': 0.05303866043686867, 'fpr90': 0.59, 'fnr90': 0.4, 'FPR Class': 0.09, 'FNR Class': 
+0.41, 'ROC AUC': 0.83, 'AUC Error': 0.52, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 7/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.015646583055204243, 'val_loss': 0.02459429883310804, 'avg_training_time': 0.72}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=33784) testing device 3 [repeated 12x across cluster]
+(ClientAppActor pid=33784) Confusion Matrix Classify and Device Number 3: [repeated 12x across cluster]
+(ClientAppActor pid=19692) [[ 81  69] [repeated 2x across cluster]
+(ClientAppActor pid=33784)  [ 50 100]] [repeated 12x across cluster]
+(ClientAppActor pid=33784) Device 3 ROC AUC 0.7404888888888889 ROC AUC Error 0.5621555555555554 [repeated 12x across cluster]
+(ClientAppActor pid=33784) Device 3 Fpr90 0.29 Fnr90 0.45 FPR Class 0.17 FNR Class 0.33 [repeated 12x across cluster]
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[127  23]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[108  42]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[125  25]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.001354261883534491, 'threshold tr_star': 0.16821586806327105, 'fpr90': 0.42, 'fnr90': 0.44249999999999995, 'FPR Class': 0.19500000000000003, 'FNR Class': 0.33999999999999997, 'ROC AUC': 0.7925, 'AUC Error': 0.5375, 'avg_testing_time': 0.0525}
+INFO :      Global evaluation
+(ClientAppActor pid=34728) 
+(ClientAppActor pid=34728) [[123  27]
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[128  22]
+ [ 43 107]]
+              precision    recall  f1-score   support
+
+         0.0       0.75      0.85      0.80       150
+         1.0       0.83      0.71      0.77       150
+
+    accuracy                           0.78       300
+   macro avg       0.79      0.78      0.78       300
+weighted avg       0.79      0.78      0.78       300
+
+ROC AUC 0.8076 ROC AUC Error 0.5216
+Fpr90 0.58 Fnr90 0.41 FPR Class 0.15 FNR Class 0.29
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0013310356298461556, 'threshold tr_star': 0.05121036246418953, 'fpr90': 0.58, 'fnr90': 0.41, 'FPR Class': 0.15, 'FNR Class': 0.29, 'ROC AUC': 0.81, 'AUC Error': 0.52, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 8/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.015393359508792248, 'val_loss': 0.024392766646051313, 'avg_training_time': 0.705}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[113  37]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[107  43]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[136  14]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.0015844194567762315, 'threshold tr_star': 0.16692685801535845, 'fpr90': 0.46, 'fnr90': 0.4325, 'FPR Class': 0.195, 'FNR Class': 0.20750000000000002, 'ROC AUC': 0.7875000000000001, 'AUC Error': 0.5349999999999999, 'avg_testing_time': 0.05}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[141   9]
+ [ 67  83]]
+              precision    recall  f1-score   support
+
+         0.0       0.68      0.94      0.79       150
+         1.0       0.90      0.55      0.69       150
+
+    accuracy                           0.75       300
+   macro avg       0.79      0.75      0.74       300
+weighted avg       0.79      0.75      0.74       300
+
+ROC AUC 0.8322888888888889 ROC AUC Error 0.5201333333333332
+Fpr90 0.57 Fnr90 0.41 FPR Class 0.06 FNR Class 0.45
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0015802332200109959, 'threshold tr_star': 0.05013924092054367, 'fpr90': 0.57, 'fnr90': 0.41, 'FPR Class': 0.06, 'FNR Class': 0.45, 'ROC AUC': 0.83, 'AUC Error': 0.52, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 9/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[127  23]
+(pid=gcs_server) [2026-02-16 12:45:45,466 E 13356 32684] (gcs_server.exe) gcs_server.cc:302: Failed to establish connection to the event+metrics exporter agent. Events and metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+(ClientAppActor pid=34728) load_data_TonIoT [repeated 24x across cluster]
+(ClientAppActor pid=34728) Before Training 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) Before Testing 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) Testing 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) After Training 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) After Testing 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) TinyML Selection: Using 11 features: ['TotLen Fwd Pkts', 'TotLen Bwd Pkts', 'Flow Byts/s', 'Flow Pkts/s', 'Fwd Pkts/s', 'Pkt Len Var', 'Pkt Size Avg', 'Subflow Fwd Byts', 'Init Bwd Win Byts', 'Subflow Bwd Byts', 'Label'] [repeated 24x across cluster]
+(ClientAppActor pid=34728) Full 300 Benign 150 Anomaly 150 [repeated 24x across cluster]
+(ClientAppActor pid=34728) training device 3 [repeated 12x across cluster]
+(ClientAppActor pid=34728) Train Loss: 0.011498 | Val Loss: 0.049124 [repeated 12x across cluster]
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.015246326619720398, 'val_loss': 0.024267959235585293, 'avg_training_time': 0.7075}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[127  23]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[130  20]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[126  24]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[131  19]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.0017360777128487825, 'threshold tr_star': 0.16603910643607378, 'fpr90': 0.5275, 'fnr90': 0.41999999999999993, 'FPR Class': 0.14250000000000002, 'FNR Class': 0.2475, 'ROC AUC': 0.8275, 'AUC Error': 0.5349999999999999, 'avg_testing_time': 0.05}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[137  13]
+ [ 39 111]]
+              precision    recall  f1-score   support
+
+         0.0       0.78      0.91      0.84       150
+         1.0       0.90      0.74      0.81       150
+
+    accuracy                           0.83       300
+   macro avg       0.84      0.83      0.83       300
+weighted avg       0.84      0.83      0.83       300
+
+ROC AUC 0.8054888888888888 ROC AUC Error 0.5124888888888889
+Fpr90 0.47 Fnr90 0.43 FPR Class 0.09 FNR Class 0.26
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0017388772685080767, 'threshold tr_star': 0.04929129034280777, 'fpr90': 0.47, 'fnr90': 0.43, 'FPR Class': 0.09, 'FNR Class': 0.26, 'ROC AUC': 0.81, 'AUC Error': 0.51, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 10/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.015104507562937214, 'val_loss': 0.024128797259763815, 'avg_training_time': 0.735}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=33784) testing device 3 [repeated 12x across cluster]
+(ClientAppActor pid=33784) Confusion Matrix Classify and Device Number 3: [repeated 12x across cluster]
+(ClientAppActor pid=33784)  [ 47 103]] [repeated 12x across cluster]
+(ClientAppActor pid=33784) Device 3 ROC AUC 0.7913555555555556 ROC AUC Error 0.5411333333333332 [repeated 12x across cluster]
+(ClientAppActor pid=33784) Device 3 Fpr90 0.61 Fnr90 0.38 FPR Class 0.13 FNR Class 0.31 [repeated 12x across cluster]
+(raylet) [2026-02-16 12:45:49,013 E 31088 6260] (raylet.exe) main.cc:975: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter 
+agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[130  20]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[ 86  64]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[ 30 120]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[127  23]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.0018761094252113253, 'threshold tr_star': 0.16512822825461626, 'fpr90': 0.54, 'fnr90': 0.42999999999999994, 'FPR 
+Class': 0.3775, 'FNR Class': 0.1675, 'ROC AUC': 0.7150000000000001, 'AUC Error': 0.54, 'avg_testing_time': 0.045000000000000005}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[ 39 111]
+ [ 38 112]]
+              precision    recall  f1-score   support
+
+         0.0       0.51      0.26      0.34       150
+         1.0       0.50      0.75      0.60       150
+
+    accuracy                           0.50       300
+   macro avg       0.50      0.50      0.47       300
+weighted avg       0.50      0.50      0.47       300
+
+ROC AUC 0.48979999999999996 ROC AUC Error 0.5094222222222223
+Fpr90 0.48 Fnr90 0.44 FPR Class 0.74 FNR Class 0.25
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0018734741024672985, 'threshold tr_star': 0.04851343482732773, 'fpr90': 0.48, 'fnr90': 0.44, 'FPR Class': 0.74, 'FNR Class': 0.25, 'ROC AUC': 0.49, 'AUC Error': 0.51, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 11/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+[2026-02-16 12:45:50,067 E 10708 16276] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent 
+status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.014946995523641819, 'val_loss': 0.02398648164293263, 'avg_training_time': 0.75}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[127  23]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[ 85  65]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[130  20]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[136  14]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.0019234815845265985, 'threshold tr_star': 0.16445654816925526, 'fpr90': 0.5475, 'fnr90': 0.42000000000000004, 'FPR Class': 0.19999999999999998, 'FNR Class': 0.2475, 'ROC AUC': 0.77, 'AUC Error': 0.54, 'avg_testing_time': 0.045000000000000005}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[140  10]
+ [ 31 119]]
+              precision    recall  f1-score   support
+
+         0.0       0.82      0.93      0.87       150
+         1.0       0.92      0.79      0.85       150
+
+    accuracy                           0.86       300
+   macro avg       0.87      0.86      0.86       300
+weighted avg       0.87      0.86      0.86       300
+
+ROC AUC 0.8705111111111111 ROC AUC Error 0.49848888888888887
+Fpr90 0.61 Fnr90 0.41 FPR Class 0.07 FNR Class 0.21
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.001920950599014759, 'threshold tr_star': 0.04791893810033798, 'fpr90': 0.61, 'fnr90': 0.41, 'FPR Class': 0.07, 'FNR Class': 
+0.21, 'ROC AUC': 0.87, 'AUC Error': 0.5, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 12/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.014727029226875554, 'val_loss': 0.023752200423623436, 'avg_training_time': 0.7}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=33784) load_data_TonIoT [repeated 24x across cluster]
+(ClientAppActor pid=33784) Before Training 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=33784) Before Testing 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=33784) Testing 1000 [repeated 24x across cluster]
+(ClientAppActor pid=33784) After Training 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=33784) After Testing 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=33784) TinyML Selection: Using 11 features: ['TotLen Fwd Pkts', 'TotLen Bwd Pkts', 'Flow Byts/s', 'Flow Pkts/s', 'Fwd Pkts/s', 'Pkt Len Var', 'Pkt Size Avg', 'Subflow Fwd Byts', 'Init Bwd Win Byts', 'Subflow Bwd Byts', 'Label'] [repeated 24x across cluster]
+(ClientAppActor pid=33784) Full 300 Benign 150 Anomaly 150 [repeated 24x across cluster]
+(ClientAppActor pid=33784) training device 3 [repeated 12x across cluster]
+(ClientAppActor pid=33784) Train Loss: 0.011140 | Val Loss: 0.048497 [repeated 12x across cluster]
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[117  33]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[106  44]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[131  19]
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[136  14]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.0019347175548318774, 'threshold tr_star': 0.16354066180065274, 'fpr90': 0.4375, 'fnr90': 0.44499999999999995, 'FPR Class': 0.1825, 'FNR Class': 0.32749999999999996, 'ROC AUC': 0.7425, 'AUC Error': 0.54, 'avg_testing_time': 0.045000000000000005}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[126  24]
+ [ 38 112]]
+              precision    recall  f1-score   support
+
+         0.0       0.77      0.84      0.80       150
+         1.0       0.82      0.75      0.78       150
+
+    accuracy                           0.79       300
+   macro avg       0.80      0.79      0.79       300
+weighted avg       0.80      0.79      0.79       300
+
+ROC AUC 0.7954888888888889 ROC AUC Error 0.49293333333333333
+Fpr90 0.49 Fnr90 0.45 FPR Class 0.16 FNR Class 0.25
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0019304510205984116, 'threshold tr_star': 0.047183260321617126, 'fpr90': 0.49, 'fnr90': 0.45, 'FPR Class': 0.16, 'FNR Class': 0.25, 'ROC AUC': 0.8, 'AUC Error': 0.49, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 13/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=33784) [2026-02-16 12:45:53,069 E 33784 33160] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+(ClientAppActor pid=19692) testing device 3 [repeated 12x across cluster]
+(ClientAppActor pid=19692) Confusion Matrix Classify and Device Number 3: [repeated 12x across cluster]
+(ClientAppActor pid=19692)  [ 60  90]] [repeated 12x across cluster]
+(ClientAppActor pid=19692) Device 3 ROC AUC 0.7533333333333334 ROC AUC Error 0.5375333333333334 [repeated 12x across cluster]
+(ClientAppActor pid=19692) Device 3 Fpr90 0.45 Fnr90 0.44 FPR Class 0.09 FNR Class 0.4 [repeated 12x across cluster]
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.014444912673012974, 'val_loss': 0.023481726094032637, 'avg_training_time': 0.7400000000000001}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.001981016481295228, 'threshold tr_star': 0.1623489740304649, 'fpr90': 0.49749999999999994, 'fnr90': 0.435, 'FPR Class': 0.1525, 'FNR Class': 0.3925, 'ROC AUC': 0.715, 'AUC Error': 0.54, 'avg_testing_time': 0.052500000000000005}
+INFO :      Global evaluation
+(ClientAppActor pid=19692)
+(ClientAppActor pid=19692) [[119  31]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[124  26]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[129  21]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[137  13]
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[126  24]
+ [ 53  97]]
+              precision    recall  f1-score   support
+
+         0.0       0.70      0.84      0.77       150
+         1.0       0.80      0.65      0.72       150
+
+    accuracy                           0.74       300
+   macro avg       0.75      0.74      0.74       300
+weighted avg       0.75      0.74      0.74       300
+
+ROC AUC 0.7175555555555555 ROC AUC Error 0.4820888888888889
+Fpr90 0.65 Fnr90 0.43 FPR Class 0.16 FNR Class 0.35
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.0019710869528353214, 'threshold tr_star': 0.04607450217008591, 'fpr90': 0.65, 'fnr90': 0.43, 'FPR Class': 0.16, 'FNR Class': 0.35, 'ROC AUC': 0.72, 'AUC Error': 0.48, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 14/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.014098799404649373, 'val_loss': 0.02316618883400224, 'avg_training_time': 0.7074999999999999}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[117  33]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[ 96  54]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[126  24]
+(ClientAppActor pid=34728) 
+(ClientAppActor pid=34728) [[136  14]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.0019813869439531118, 'threshold tr_star': 0.16104169189929962, 'fpr90': 0.605, 'fnr90': 0.43, 'FPR Class': 0.2075, 'FNR Class': 0.32, 'ROC AUC': 0.7275, 'AUC Error': 0.5375000000000001, 'avg_testing_time': 0.05}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[135  15]
+ [ 56  94]]
+              precision    recall  f1-score   support
+
+         0.0       0.71      0.90      0.79       150
+         1.0       0.86      0.63      0.73       150
+
+    accuracy                           0.76       300
+   macro avg       0.78      0.76      0.76       300
+weighted avg       0.78      0.76      0.76       300
+
+ROC AUC 0.7922222222222222 ROC AUC Error 0.4821777777777777
+Fpr90 0.63 Fnr90 0.43 FPR Class 0.1 FNR Class 0.37
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.001982601825147867, 'threshold tr_star': 0.044958580285310745, 'fpr90': 0.63, 'fnr90': 0.43, 'FPR Class': 0.1, 'FNR Class': 
+0.37, 'ROC AUC': 0.79, 'AUC Error': 0.48, 'num-examples': 300}
+INFO :
+INFO :      [ROUND 15/15]
+INFO :      configure_train: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=34728) 
+INFO :      aggregate_train: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'train_loss': 0.013706892754028862, 'val_loss': 0.022795363603509033, 'avg_training_time': 0.74}
+INFO :      configure_evaluate: Sampled 4 nodes (out of 4)
+(ClientAppActor pid=34728) load_data_TonIoT [repeated 24x across cluster]
+(ClientAppActor pid=34728) Before Training 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) Before Testing 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) Testing 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) After Training 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) After Testing 3 1000 [repeated 24x across cluster]
+(ClientAppActor pid=34728) TinyML Selection: Using 11 features: ['TotLen Fwd Pkts', 'TotLen Bwd Pkts', 'Flow Byts/s', 'Flow Pkts/s', 'Fwd Pkts/s', 'Pkt Len Var', 'Pkt Size Avg', 'Subflow Fwd Byts', 'Init Bwd Win Byts', 'Subflow Bwd Byts', 'Label'] [repeated 24x across cluster]
+(ClientAppActor pid=34728) Full 300 Benign 150 Anomaly 150 [repeated 24x across cluster]
+(ClientAppActor pid=34728) training device 3 [repeated 12x across cluster]
+(ClientAppActor pid=34728) Train Loss: 0.010395 | Val Loss: 0.047452 [repeated 12x across cluster]
+(ClientAppActor pid=19692) 
+(ClientAppActor pid=19692) [[128  22]
+(ClientAppActor pid=34728)
+(ClientAppActor pid=34728) [[124  26]
+(ClientAppActor pid=33784)
+(ClientAppActor pid=33784) [[114  36]
+(ClientAppActor pid=34728) 
+(ClientAppActor pid=34728) [[ 39 111]
+INFO :      aggregate_evaluate: Received 4 results and 0 failures
+INFO :          └──> Aggregated MetricRecord: {'threshold': 0.001981370325665921, 'threshold tr_star': 0.1595278112217784, 'fpr90': 0.4275, 'fnr90': 0.44749999999999995, 'FPR 
+Class': 0.325, 'FNR Class': 0.1375, 'ROC AUC': 0.7675, 'AUC Error': 0.5375000000000001, 'avg_testing_time': 0.04}
+INFO :      Global evaluation
+load_data_TonIoT
+Before Training  1000
+Before Testing 1000
+Testing 1000
+After Training 1000
+After Testing 1000
+Full 300 Benign 150 Anomaly 150
+testing device 1000
+
+Confusion Matrix Classify:
+[[131  19]
+ [ 32 118]]
+              precision    recall  f1-score   support
+
+         0.0       0.80      0.87      0.84       150
+         1.0       0.86      0.79      0.82       150
+
+    accuracy                           0.83       300
+   macro avg       0.83      0.83      0.83       300
+weighted avg       0.83      0.83      0.83       300
+
+ROC AUC 0.8243555555555556 ROC AUC Error 0.47186666666666666
+Fpr90 0.63 Fnr90 0.45 FPR Class 0.13 FNR Class 0.21
+Tree exported to tree_model.h
+INFO :          └──> MetricRecord: {'threshold': 0.001981500070542097, 'threshold tr_star': 0.043482255190610886, 'fpr90': 0.63, 'fnr90': 0.45, 'FPR Class': 0.13, 'FNR Class': 0.21, 'ROC AUC': 0.82, 'AUC Error': 0.47, 'num-examples': 300}
+INFO :
+INFO :      Strategy execution finished in 46.11s
+INFO :
+INFO :      Final results:
+INFO :
+INFO :          Global Arrays:
+INFO :                  ArrayRecord (0.002 MB)
+INFO :
+INFO :          Aggregated ClientApp-side Train Metrics:
+INFO :          { 1: { 'avg_training_time': '7.3500e-01',
+INFO :                 'train_loss': '5.9169e-02',
+INFO :                 'val_loss': '6.3598e-02'},
+INFO :            2: { 'avg_training_time': '7.0250e-01',
+INFO :                 'train_loss': '4.0289e-02',
+INFO :                 'val_loss': '4.6683e-02'},
+INFO :            3: { 'avg_training_time': '7.1500e-01',
+INFO :                 'train_loss': '2.9885e-02',
+INFO :                 'val_loss': '3.7154e-02'},
+INFO :            4: { 'avg_training_time': '7.2000e-01',
+INFO :                 'train_loss': '2.2825e-02',
+INFO :                 'val_loss': '3.0762e-02'},
+INFO :            5: { 'avg_training_time': '7.1250e-01',
+INFO :                 'train_loss': '1.8521e-02',
+INFO :                 'val_loss': '2.6987e-02'},
+INFO :            6: { 'avg_training_time': '6.9750e-01',
+INFO :                 'train_loss': '1.6424e-02',
+INFO :                 'val_loss': '2.5238e-02'},
+INFO :            7: { 'avg_training_time': '7.2000e-01',
+INFO :                 'train_loss': '1.5647e-02',
+INFO :                 'val_loss': '2.4594e-02'},
+INFO :            8: { 'avg_training_time': '7.0500e-01',
+INFO :                 'train_loss': '1.5393e-02',
+INFO :                 'val_loss': '2.4393e-02'},
+INFO :            9: { 'avg_training_time': '7.0750e-01',
+INFO :                 'train_loss': '1.5246e-02',
+INFO :                 'val_loss': '2.4268e-02'},
+INFO :            10: { 'avg_training_time': '7.3500e-01',
+INFO :                  'train_loss': '1.5105e-02',
+INFO :                  'val_loss': '2.4129e-02'},
+INFO :            11: { 'avg_training_time': '7.5000e-01',
+INFO :                  'train_loss': '1.4947e-02',
+INFO :                  'val_loss': '2.3986e-02'},
+INFO :            12: { 'avg_training_time': '7.0000e-01',
+INFO :                  'train_loss': '1.4727e-02',
+INFO :                  'val_loss': '2.3752e-02'},
+INFO :            13: { 'avg_training_time': '7.4000e-01',
+INFO :                  'train_loss': '1.4445e-02',
+INFO :                  'val_loss': '2.3482e-02'},
+INFO :            14: { 'avg_training_time': '7.0750e-01',
+INFO :                  'train_loss': '1.4099e-02',
+INFO :                  'val_loss': '2.3166e-02'},
+INFO :            15: { 'avg_training_time': '7.4000e-01',
+INFO :                  'train_loss': '1.3707e-02',
+INFO :                  'val_loss': '2.2795e-02'}}
+INFO :
+INFO :          Aggregated ClientApp-side Evaluate Metrics:
+INFO :          { 1: { 'AUC Error': '7.3500e-01',
+INFO :                 'FNR Class': '2.3000e-01',
+INFO :                 'FPR Class': '2.4500e-01',
+INFO :                 'ROC AUC': '7.7500e-01',
+INFO :                 'avg_testing_time': '6.5000e-02',
+INFO :                 'fnr90': '1.1000e-01',
+INFO :                 'fpr90': '5.5250e-01',
+INFO :                 'threshold': '3.1018e-02',
+INFO :                 'threshold tr_star': '2.2566e-01'},
+INFO :            2: { 'AUC Error': '7.3500e-01',
+INFO :                 'FNR Class': '2.8500e-01',
+INFO :                 'FPR Class': '1.6500e-01',
+INFO :                 'ROC AUC': '7.7250e-01',
+INFO :                 'avg_testing_time': '5.0000e-02',
+INFO :                 'fnr90': '8.7500e-02',
+INFO :                 'fpr90': '5.8250e-01',
+INFO :                 'threshold': '1.6476e-02',
+INFO :                 'threshold tr_star': '2.0385e-01'},
+INFO :            3: { 'AUC Error': '7.3750e-01',
+INFO :                 'FNR Class': '2.1750e-01',
+INFO :                 'FPR Class': '3.9250e-01',
+INFO :                 'ROC AUC': '7.1000e-01',
+INFO :                 'avg_testing_time': '5.0000e-02',
+INFO :                 'fnr90': '9.2500e-02',
+INFO :                 'fpr90': '6.2500e-01',
+INFO :                 'threshold': '8.7679e-03',
+INFO :                 'threshold tr_star': '1.9081e-01'},
+INFO :            4: { 'AUC Error': '7.4250e-01',
+INFO :                 'FNR Class': '1.6750e-01',
+INFO :                 'FPR Class': '3.1750e-01',
+INFO :                 'ROC AUC': '7.4250e-01',
+INFO :                 'avg_testing_time': '4.2500e-02',
+INFO :                 'fnr90': '8.2500e-02',
+INFO :                 'fpr90': '5.5250e-01',
+INFO :                 'threshold': '4.0418e-03',
+INFO :                 'threshold tr_star': '1.8151e-01'},
+INFO :            5: { 'AUC Error': '5.7750e-01',
+INFO :                 'FNR Class': '2.2750e-01',
+INFO :                 'FPR Class': '2.5000e-01',
+INFO :                 'ROC AUC': '7.6500e-01',
+INFO :                 'avg_testing_time': '4.7500e-02',
+INFO :                 'fnr90': '3.6250e-01',
+INFO :                 'fpr90': '5.2250e-01',
+INFO :                 'threshold': '1.8231e-03',
+INFO :                 'threshold tr_star': '1.7491e-01'},
+INFO :            6: { 'AUC Error': '5.5500e-01',
+INFO :                 'FNR Class': '2.2500e-01',
+INFO :                 'FPR Class': '2.0250e-01',
+INFO :                 'ROC AUC': '8.0000e-01',
+INFO :                 'avg_testing_time': '4.7500e-02',
+INFO :                 'fnr90': '4.1250e-01',
+INFO :                 'fpr90': '3.8750e-01',
+INFO :                 'threshold': '1.2356e-03',
+INFO :                 'threshold tr_star': '1.7063e-01'},
+INFO :            7: { 'AUC Error': '5.3750e-01',
+INFO :                 'FNR Class': '3.4000e-01',
+INFO :                 'FPR Class': '1.9500e-01',
+INFO :                 'ROC AUC': '7.9250e-01',
+INFO :                 'avg_testing_time': '5.2500e-02',
+INFO :                 'fnr90': '4.4250e-01',
+INFO :                 'fpr90': '4.2000e-01',
+INFO :                 'threshold': '1.3543e-03',
+INFO :                 'threshold tr_star': '1.6822e-01'},
+INFO :            8: { 'AUC Error': '5.3500e-01',
+INFO :                 'FNR Class': '2.0750e-01',
+INFO :                 'FPR Class': '1.9500e-01',
+INFO :                 'ROC AUC': '7.8750e-01',
+INFO :                 'avg_testing_time': '5.0000e-02',
+INFO :                 'fnr90': '4.3250e-01',
+INFO :                 'fpr90': '4.6000e-01',
+INFO :                 'threshold': '1.5844e-03',
+INFO :                 'threshold tr_star': '1.6693e-01'},
+INFO :            9: { 'AUC Error': '5.3500e-01',
+INFO :                 'FNR Class': '2.4750e-01',
+INFO :                 'FPR Class': '1.4250e-01',
+INFO :                 'ROC AUC': '8.2750e-01',
+INFO :                 'avg_testing_time': '5.0000e-02',
+INFO :                 'fnr90': '4.2000e-01',
+INFO :                 'fpr90': '5.2750e-01',
+INFO :                 'threshold': '1.7361e-03',
+INFO :                 'threshold tr_star': '1.6604e-01'},
+INFO :            10: { 'AUC Error': '5.4000e-01',
+INFO :                  'FNR Class': '1.6750e-01',
+INFO :                  'FPR Class': '3.7750e-01',
+INFO :                  'ROC AUC': '7.1500e-01',
+INFO :                  'avg_testing_time': '4.5000e-02',
+INFO :                  'fnr90': '4.3000e-01',
+INFO :                  'fpr90': '5.4000e-01',
+INFO :                  'threshold': '1.8761e-03',
+INFO :                  'threshold tr_star': '1.6513e-01'},
+INFO :            11: { 'AUC Error': '5.4000e-01',
+INFO :                  'FNR Class': '2.4750e-01',
+INFO :                  'FPR Class': '2.0000e-01',
+INFO :                  'ROC AUC': '7.7000e-01',
+INFO :                  'avg_testing_time': '4.5000e-02',
+INFO :                  'fnr90': '4.2000e-01',
+INFO :                  'fpr90': '5.4750e-01',
+INFO :                  'threshold': '1.9235e-03',
+INFO :                  'threshold tr_star': '1.6446e-01'},
+INFO :            12: { 'AUC Error': '5.4000e-01',
+INFO :                  'FNR Class': '3.2750e-01',
+INFO :                  'FPR Class': '1.8250e-01',
+INFO :                  'ROC AUC': '7.4250e-01',
+INFO :                  'avg_testing_time': '4.5000e-02',
+INFO :                  'fnr90': '4.4500e-01',
+INFO :                  'fpr90': '4.3750e-01',
+INFO :                  'threshold': '1.9347e-03',
+INFO :                  'threshold tr_star': '1.6354e-01'},
+INFO :            13: { 'AUC Error': '5.4000e-01',
+INFO :                  'FNR Class': '3.9250e-01',
+INFO :                  'FPR Class': '1.5250e-01',
+INFO :                  'ROC AUC': '7.1500e-01',
+INFO :                  'avg_testing_time': '5.2500e-02',
+INFO :                  'fnr90': '4.3500e-01',
+INFO :                  'fpr90': '4.9750e-01',
+INFO :                  'threshold': '1.9810e-03',
+INFO :                  'threshold tr_star': '1.6235e-01'},
+INFO :            14: { 'AUC Error': '5.3750e-01',
+INFO :                  'FNR Class': '3.2000e-01',
+INFO :                  'FPR Class': '2.0750e-01',
+INFO :                  'ROC AUC': '7.2750e-01',
+INFO :                  'avg_testing_time': '5.0000e-02',
+INFO :                  'fnr90': '4.3000e-01',
+INFO :                  'fpr90': '6.0500e-01',
+INFO :                  'threshold': '1.9814e-03',
+INFO :                  'threshold tr_star': '1.6104e-01'},
+INFO :            15: { 'AUC Error': '5.3750e-01',
+INFO :                  'FNR Class': '1.3750e-01',
+INFO :                  'FPR Class': '3.2500e-01',
+INFO :                  'ROC AUC': '7.6750e-01',
+INFO :                  'avg_testing_time': '4.0000e-02',
+INFO :                  'fnr90': '4.4750e-01',
+INFO :                  'fpr90': '4.2750e-01',
+INFO :                  'threshold': '1.9814e-03',
+INFO :                  'threshold tr_star': '1.5953e-01'}}
+INFO :
+INFO :          ServerApp-side Evaluate Metrics:
+INFO :          { 0: { 'AUC Error': '7.0000e-01',
+INFO :                 'FNR Class': '3.5000e-01',
+INFO :                 'FPR Class': '6.5000e-01',
+INFO :                 'ROC AUC': '5.1000e-01',
+INFO :                 'fnr90': '1.7000e-01',
+INFO :                 'fpr90': '4.4000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '6.4468e-02',
+INFO :                 'threshold tr_star': '1.4476e-01'},
+INFO :            1: { 'AUC Error': '7.0000e-01',
+INFO :                 'FNR Class': '2.0000e-01',
+INFO :                 'FPR Class': '1.5000e-01',
+INFO :                 'ROC AUC': '8.5000e-01',
+INFO :                 'fnr90': '9.0000e-02',
+INFO :                 'fpr90': '8.3000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '3.0987e-02',
+INFO :                 'threshold tr_star': '1.0324e-01'},
+INFO :            2: { 'AUC Error': '6.9000e-01',
+INFO :                 'FNR Class': '1.5000e-01',
+INFO :                 'FPR Class': '3.1000e-01',
+INFO :                 'ROC AUC': '7.5000e-01',
+INFO :                 'fnr90': '1.7000e-01',
+INFO :                 'fpr90': '5.2000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '1.6539e-02',
+INFO :                 'threshold tr_star': '8.2681e-02'},
+INFO :            3: { 'AUC Error': '7.0000e-01',
+INFO :                 'FNR Class': '3.6000e-01',
+INFO :                 'FPR Class': '2.8000e-01',
+INFO :                 'ROC AUC': '6.8000e-01',
+INFO :                 'fnr90': '1.7000e-01',
+INFO :                 'fpr90': '5.3000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '8.8151e-03',
+INFO :                 'threshold tr_star': '7.0391e-02'},
+INFO :            4: { 'AUC Error': '7.2000e-01',
+INFO :                 'FNR Class': '2.9000e-01',
+INFO :                 'FPR Class': '7.1000e-01',
+INFO :                 'ROC AUC': '4.2000e-01',
+INFO :                 'fnr90': '1.3000e-01',
+INFO :                 'fpr90': '5.1000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '4.0190e-03',
+INFO :                 'threshold tr_star': '6.1832e-02'},
+INFO :            5: { 'AUC Error': '6.1000e-01',
+INFO :                 'FNR Class': '4.1000e-01',
+INFO :                 'FPR Class': '1.6000e-01',
+INFO :                 'ROC AUC': '6.4000e-01',
+INFO :                 'fnr90': '3.2000e-01',
+INFO :                 'fpr90': '3.3000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '1.7785e-03',
+INFO :                 'threshold tr_star': '5.6338e-02'},
+INFO :            6: { 'AUC Error': '5.2000e-01',
+INFO :                 'FNR Class': '4.1000e-01',
+INFO :                 'FPR Class': '9.0000e-02',
+INFO :                 'ROC AUC': '8.3000e-01',
+INFO :                 'fnr90': '4.0000e-01',
+INFO :                 'fpr90': '5.9000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '1.2011e-03',
+INFO :                 'threshold tr_star': '5.3039e-02'},
+INFO :            7: { 'AUC Error': '5.2000e-01',
+INFO :                 'FNR Class': '2.9000e-01',
+INFO :                 'FPR Class': '1.5000e-01',
+INFO :                 'ROC AUC': '8.1000e-01',
+INFO :                 'fnr90': '4.1000e-01',
+INFO :                 'fpr90': '5.8000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '1.3310e-03',
+INFO :                 'threshold tr_star': '5.1210e-02'},
+INFO :            8: { 'AUC Error': '5.2000e-01',
+INFO :                 'FNR Class': '4.5000e-01',
+INFO :                 'FPR Class': '6.0000e-02',
+INFO :                 'ROC AUC': '8.3000e-01',
+INFO :                 'fnr90': '4.1000e-01',
+INFO :                 'fpr90': '5.7000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '1.5802e-03',
+INFO :                 'threshold tr_star': '5.0139e-02'},
+INFO :            9: { 'AUC Error': '5.1000e-01',
+INFO :                 'FNR Class': '2.6000e-01',
+INFO :                 'FPR Class': '9.0000e-02',
+INFO :                 'ROC AUC': '8.1000e-01',
+INFO :                 'fnr90': '4.3000e-01',
+INFO :                 'fpr90': '4.7000e-01',
+INFO :                 'num-examples': '300',
+INFO :                 'threshold': '1.7389e-03',
+INFO :                 'threshold tr_star': '4.9291e-02'},
+INFO :            10: { 'AUC Error': '5.1000e-01',
+INFO :                  'FNR Class': '2.5000e-01',
+INFO :                  'FPR Class': '7.4000e-01',
+INFO :                  'ROC AUC': '4.9000e-01',
+INFO :                  'fnr90': '4.4000e-01',
+INFO :                  'fpr90': '4.8000e-01',
+INFO :                  'num-examples': '300',
+INFO :                  'threshold': '1.8735e-03',
+INFO :                  'threshold tr_star': '4.8513e-02'},
+INFO :            11: { 'AUC Error': '5.0000e-01',
+INFO :                  'FNR Class': '2.1000e-01',
+INFO :                  'FPR Class': '7.0000e-02',
+INFO :                  'ROC AUC': '8.7000e-01',
+INFO :                  'fnr90': '4.1000e-01',
+INFO :                  'fpr90': '6.1000e-01',
+INFO :                  'num-examples': '300',
+INFO :                  'threshold': '1.9210e-03',
+INFO :                  'threshold tr_star': '4.7919e-02'},
+INFO :            12: { 'AUC Error': '4.9000e-01',
+INFO :                  'FNR Class': '2.5000e-01',
+INFO :                  'FPR Class': '1.6000e-01',
+INFO :                  'ROC AUC': '8.0000e-01',
+INFO :                  'fnr90': '4.5000e-01',
+INFO :                  'fpr90': '4.9000e-01',
+INFO :                  'num-examples': '300',
+INFO :                  'threshold': '1.9305e-03',
+INFO :                  'threshold tr_star': '4.7183e-02'},
+INFO :            13: { 'AUC Error': '4.8000e-01',
+INFO :                  'FNR Class': '3.5000e-01',
+INFO :                  'FPR Class': '1.6000e-01',
+INFO :                  'ROC AUC': '7.2000e-01',
+INFO :                  'fnr90': '4.3000e-01',
+INFO :                  'fpr90': '6.5000e-01',
+INFO :                  'num-examples': '300',
+INFO :                  'threshold': '1.9711e-03',
+INFO :                  'threshold tr_star': '4.6075e-02'},
+INFO :            14: { 'AUC Error': '4.8000e-01',
+INFO :                  'FNR Class': '3.7000e-01',
+INFO :                  'FPR Class': '1.0000e-01',
+INFO :                  'ROC AUC': '7.9000e-01',
+INFO :                  'fnr90': '4.3000e-01',
+INFO :                  'fpr90': '6.3000e-01',
+INFO :                  'num-examples': '300',
+INFO :                  'threshold': '1.9826e-03',
+INFO :                  'threshold tr_star': '4.4959e-02'},
+INFO :            15: { 'AUC Error': '4.7000e-01',
+INFO :                  'FNR Class': '2.1000e-01',
+INFO :                  'FPR Class': '1.3000e-01',
+INFO :                  'ROC AUC': '8.2000e-01',
+INFO :                  'fnr90': '4.5000e-01',
+INFO :                  'fpr90': '6.3000e-01',
+INFO :                  'num-examples': '300',
+INFO :                  'threshold': '1.9815e-03',
+INFO :                  'threshold tr_star': '4.3482e-02'}}
+INFO :
+
+Saving final model to disk...
+(ClientAppActor pid=33784) testing device 1 [repeated 12x across cluster]
+(ClientAppActor pid=34728) Confusion Matrix Classify and Device Number 3: [repeated 12x across cluster]
+(ClientAppActor pid=34728)  [ 19 131]] [repeated 12x across cluster]
+(ClientAppActor pid=34728) Device 3 ROC AUC 0.571 ROC AUC Error 0.539711111111111 [repeated 12x across cluster]
+(ClientAppActor pid=34728) Device 3 Fpr90 0.57 Fnr90 0.43 FPR Class 0.74 FNR Class 0.13 [repeated 12x across cluster]
+(ClientAppActor pid=33784) load_data_TonIoT [repeated 4x across cluster]
+(ClientAppActor pid=33784) Before Training 1 1000 [repeated 4x across cluster]
+(ClientAppActor pid=33784) Testing 1000 [repeated 4x across cluster]
+(ClientAppActor pid=33784) After Training 1 1000 [repeated 4x across cluster]
+(ClientAppActor pid=33784) After Testing 1 1000 [repeated 4x across cluster]
+(ClientAppActor pid=33784) TinyML Selection: Using 11 features: ['TotLen Fwd Pkts', 'TotLen Bwd Pkts', 'Flow Byts/s', 'Flow Pkts/s', 'Fwd Pkts/s', 'Pkt Len Var', 'Pkt Size Avg', 'Subflow Fwd Byts', 'Init Bwd Win Byts', 'Subflow Bwd Byts', 'Label'] [repeated 4x across cluster]
+(ClientAppActor pid=33784) Full 300 Benign 150 Anomaly 150 [repeated 4x across cluster]
+(ClientAppActor pid=34728) [2026-02-16 12:45:54,140 E 34728 19404] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14 [repeated 2x across cluster]
