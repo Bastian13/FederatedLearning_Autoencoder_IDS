@@ -1,4 +1,21 @@
-# Python_FL_Model: A Flower / PyTorch app
+# TinyFL Model: ML Based IDS with FlowerAI
+
+- [TinyFL Model: ML Based IDS with FlowerAI](#tinyfl-model-ml-based-ids-with-flowerai)
+  - [Install dependencies and project](#install-dependencies-and-project)
+  - [Run with the Simulation Engine](#run-with-the-simulation-engine)
+  - [Run with the Deployment Engine](#run-with-the-deployment-engine)
+  - [Customizing the Model](#customizing-the-model)
+    - [Use own Dataset](#use-own-dataset)
+      - [trainloader](#trainloader)
+      - [validaton\_loader](#validaton_loader)
+      - [X\_test\_full](#x_test_full)
+      - [X\_Validation](#x_validation)
+      - [y\_true](#y_true)
+      - [X\_train\_classifier](#x_train_classifier)
+      - [y\_class](#y_class)
+  - [dataset\_load.py](#dataset_loadpy)
+    - [For Clients](#for-clients)
+    - [For Server Global Model](#for-server-global-model)
 
 ## Install dependencies and project
 
