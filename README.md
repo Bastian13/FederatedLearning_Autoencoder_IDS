@@ -92,4 +92,9 @@ onnx2tf -i model_encoder.onnx -o saved_model_enc
 6. run converter_tflite_c.py
 7. copy the files `model.h` and `model_encoder.h` into the folder `TINYML/main`
 
-
+## BibTeX entry
+Please cite this project using the following bibtex entry: <br>
+[![Generic badge](https://img.shields.io/badge/Peer%20Reviewed-No-red.svg)](https://shields.io/)
+```
+@inproceedings{}
+```
