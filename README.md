@@ -1,5 +1,6 @@
 # TinyFL Model: ML Based IDS for IoT Botnet Detection
-A TinyFL model to show a process on how to transfer an ML based IDS from a sandbox environment in a laboratory to a deployment setting using federated learning and domain-specific metrics i.e. Intrusion Detection Capabilit ($C_{ID}$) and Matthews Correlation Coefficient (MCC).
+A TinyFL model to show a process on how to transfer an ML based IDS from a sandbox environment in a laboratory to a deployment setting using federated learning and domain-specific metrics i.e. Intrusion Detection Capabilit ($C_{ID}$) and Matthews Correlation Coefficient (MCC). <br>
+
 ![system_arch](assets/system_arch.png)
 
 - [TinyFL Model: ML Based IDS for IoT Botnet Detection](#tinyfl-model-ml-based-ids-for-iot-botnet-detection)
