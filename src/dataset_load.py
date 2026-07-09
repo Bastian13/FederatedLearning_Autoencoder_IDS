@@ -1,4 +1,6 @@
 """if-and-auto: A Flower / PyTorch app."""
+import os
+import sys
 
 from torch.utils.data import DataLoader
 import torch
@@ -9,6 +11,12 @@ import pandas as pd
 import numpy as np
 
 from sklearn.model_selection import train_test_split
+
+path_exist = os.path.exists("../../datasets")
+
+if not path_exist:
+    print("Dataset directory does not exist")
+    sys.exit(1)
 
 def log1p_static_scale(df):
     """
@@ -41,8 +49,6 @@ def load_cross_data(partition_id: int, num_partitions: int, which_dataset: int):
     
     if which_dataset == 0:
     # load Training Dataset CIC-BoTIoT, Testing Dataset IoTID20 for Clients
-
-        
         dfs=[]
         j = partition_id *5 # 
         if (partition_id >= 2): # Clients 3 and 4 load Datasplit with high Flowduration 
@@ -65,47 +71,12 @@ def load_cross_data(partition_id: int, num_partitions: int, which_dataset: int):
             
         # load anomaly samples from testing Dataset for evaluation
         attacks = pd.read_csv(f"small_IoTID20_dataset_allattacks_clean/split_{partition_id+1}.csv")
-
     
         # load benign samples from testing Dataset for evaluation
-
         bengin = pd.read_csv(f"small_IoTID20_dataset_benign_clean/split_{partition_id+1}.csv")
-        print("Training BoTIoT, Testing IoTID20")
-    elif which_dataset == 1:
-        # load Training Dataset IoTID20, Testing Dataset CIC-BoTIoT for Clients
-
-
-        dfs=[]
-        j = partition_id *5
-        if (partition_id >= 2): # Clients 3 and 4 load Datasplit with high Flowduration
-            for i in range(5):
-                
-                # load 5000 benign Samples from Training Dataset            
-                df = pd.read_csv(f"small_IoTID20_dataset_benign_clean_noleak/split_{partition_id+8+1+j+i}.csv")
-                dfs.append(df)
-                df_benign = pd.concat(dfs,ignore_index=True)
-        else:    
-            for i in range(5): # Clients 1 and 2 load Datasplit with low Flowduration 
-                
-                # load 5000 benign Samples from Training Dataset
-                df = pd.read_csv(f"small_IoTID20_dataset_benign_clean_noleak/split_{partition_id+1+j+i}.csv")
-                dfs.append(df)
-                df_benign = pd.concat(dfs,ignore_index=True)
-    
-        # load anomaly samples from Training Dataset for training Decisiontree
-
-        df_attack = pd.read_csv(f"small_IoTID20_dataset_allattacks_clean/split_{partition_id+1}.csv")
-        
-        # load anomaly samples from testing Dataset for evaluation
-        attacks = pd.read_csv(f"small_BoTIoT_dataset_allattacks_clean/split_{partition_id+1}.csv")
-        
-        # load benign samples from testing Dataset for evaluation
-        bengin = pd.read_csv(f"small_BoTIoT_dataset_benign_clean/split_{partition_id+1}.csv") 
-        print("Training IoTID20, Testing BoTIoT")
 
     # concat the samples for evaluation into X_test_attacks and change here to change the ratio of the anomalies in testing
     X_test_attacks = pd.concat([bengin,attacks.sample(n= int((len(bengin)*0.1)),random_state=42)])
-
 
     print(f"Before Training {partition_id}",len(df_benign))
     print(f"Before Testing {partition_id}",len(X_test_attacks))
@@ -128,10 +99,8 @@ def load_cross_data(partition_id: int, num_partitions: int, which_dataset: int):
     # remove the label_col features
     df_attack = df_attack.drop([col for col in label_col if col in df_attack.columns], axis=1)
 
-    
     # remove the label_col features
     X_test_attacks = X_test_attacks.drop([col for col in label_col if col in X_test_attacks.columns], axis=1)
-
 
     # label attack and benign data of Testing data for evaluation 
     if which_dataset == 0:
@@ -158,7 +127,6 @@ def load_cross_data(partition_id: int, num_partitions: int, which_dataset: int):
     X_train_, X_val   = train_test_split(df_benign, test_size=0.2,random_state=42)
     # split splitted training data into Training and training set for Decision Tree
     X_train_, X_benign_dt   = train_test_split(X_train_, test_size=0.2,random_state=42) #remove this for no dt
-
 
     # Scaling
     X_train = log1p_static_scale(X_train_)
@@ -192,8 +160,6 @@ def load_cross_data(partition_id: int, num_partitions: int, which_dataset: int):
 
 def load_mono_dataset(partition_id: int, num_partitions: int,which_dataset:int):
 
-
-
     if which_dataset ==0 :
         #Training and Testing CIC-BoTIoT
         dfs = []
@@ -217,35 +183,7 @@ def load_mono_dataset(partition_id: int, num_partitions: int,which_dataset:int):
         # load 1000 anomaly samples
         X_test_attacks = pd.read_csv(f"small_BoTIoT_dataset_allattacks_clean/split_{partition_id+1}.csv")
         print("load_data_BoTIoT split")
-    elif which_dataset ==1 :
-        #Training and Testing IoTID20
-
-        dfs = []
-        i=0
-        j = partition_id *5
-        if (partition_id >= 2): # Clients 3 and 4 load Datasplit with high Flowduration
-            for i in range(5):
-                
-                # load 5000 benign Samples
-                df = pd.read_csv(f"small_IoTID20_dataset_benign_clean_noleak/split_{partition_id+8+1+j+i}.csv")
-                dfs.append(df)
-                df_benign = pd.concat(dfs,ignore_index=True)
-        else:    # Clients 1 and 2 load Datasplit with low Flowduration
-            for i in range(5):
-                
-                # load 5000 benign Samples
-                df = pd.read_csv(f"small_IoTID20_dataset_benign_clean_noleak/split_{partition_id+1+j+i}.csv")
-                dfs.append(df)
-                df_benign = pd.concat(dfs,ignore_index=True)
-        print(f"Client {partition_id} Mean Duration: {df_benign['Flow_Duration'].mean()}")
-
-        # load 1000 anomaly samples
-        X_test_attacks = pd.read_csv(f"small_IoTID20_dataset_allattacks_clean/split_{partition_id+1}.csv")
-        print("load_data_IoTID20 Split")
     
-        
-        
-        
     print(f"Before Training {partition_id}",len(df_benign))
     print(f"Before Testing {partition_id}",len(X_test_attacks))
     label_col = ['Flow ID', 'Flow_ID', 'Src IP', 'Src_IP', 'Dst IP', 'Dst_IP',
@@ -255,8 +193,6 @@ def load_mono_dataset(partition_id: int, num_partitions: int,which_dataset:int):
            "Bwd Blk Rate Avg","Bwd_Blk_Rate_Avg","Init Fwd Win Byts","Init_Fwd_Win_Byts", "Fwd Seg Size Min","Fwd_Seg_Size_Min"
            ,'Cat','Sub Cat','Attack']
     
-
-
     # replace '_' to ' ' from features. Makes it so the feature names are written the same
     df_benign.columns = df_benign.columns.str.replace('_', ' ')
     X_test_attacks.columns = X_test_attacks.columns.str.replace('_', ' ')
@@ -309,12 +245,7 @@ def load_mono_dataset(partition_id: int, num_partitions: int,which_dataset:int):
     print("Samples train",len(X_train),"val",len(X_Validation),"X_train_dt",len(X_train_dt),"attacksx",len(X_test_attacks))
     return trainloader, validaton_loader ,X_test_full, X_Validation, y_true,X_train_dt,y_dt #remove this for no dt
 
-
-
 def load_centralized_dataset(which_dataset):
-
-
-    
 
     if which_dataset ==0 :
         # load Testing Dataset CIC-BoTIoT for Server side Evaluation
@@ -351,7 +282,6 @@ def load_centralized_dataset(which_dataset):
         calibration_split = pd.read_csv(f"small_IoTID20_dataset_benign_clean_noleak/glo_split_8.csv")
         print("load_data_IoTID20 90/10")
     
-
     print(f"Before Training ",len(df_benign))
     print(f"Before Testing",len(X_test_attacks))
     label_col = ['Flow ID', 'Flow_ID', 'Src IP', 'Src_IP', 'Dst IP', 'Dst_IP',
@@ -361,13 +291,11 @@ def load_centralized_dataset(which_dataset):
            "Bwd Blk Rate Avg","Bwd_Blk_Rate_Avg","Init Fwd Win Byts","Init_Fwd_Win_Byts", "Fwd Seg Size Min","Fwd_Seg_Size_Min"
            ,'Cat','Sub Cat','Attack']
     
-
     # replace '_' to ' ' from features. Makes it so the feature names are written the same
     df_benign.columns = df_benign.columns.str.replace('_', ' ')
     X_test_attacks.columns = X_test_attacks.columns.str.replace('_', ' ')
     calibration_split.columns = calibration_split.columns.str.replace('_', ' ')
     
-   
     # remove the label_col features
     df_benign = df_benign.drop([col for col in label_col if col in df_benign.columns], axis=1)
     X_test_attacks = X_test_attacks.drop([col for col in label_col if col in X_test_attacks.columns], axis=1)
@@ -389,7 +317,6 @@ def load_centralized_dataset(which_dataset):
     print(f"After Training",len(df_benign))
     print(f"After Testing",len(X_test_attacks))
     
-
     # Split df_benign into Validation(X_val), Benign data for Test(X_test) and Training (X_train_)
     X_train_, X_val   = train_test_split(df_benign, test_size=0.2,random_state=42)
     X_train_, X_test   = train_test_split(X_train_, test_size=0.25,random_state=42)
@@ -446,7 +373,6 @@ def load_centralized_dataset(which_dataset):
                 f.write("\n")
         f.write("};\n\n")
 
-
     lenge = len(X_test_full) 
 
     y_mcu = y_true
@@ -483,8 +409,6 @@ def load_centralized_dataset(which_dataset):
 
     print("Export complete!")
 
-    
-    
     print("Samples train",len(X_train),"val",len(X_Validation),"X_train_dt",len(X_train_dt),"attacksx",len(X_test_attacks))
 
     return trainloader, validaton_loader ,X_test_full, X_Validation, y_true,X_train_dt,y_dt #remove this for no dt
@@ -502,7 +426,6 @@ def load_crossdataset(which_dataset):
             dfs.append(df)
         df_benign = pd.concat(dfs,ignore_index=True)
 
-    
         # 1000 anomaly samples of training dataset. Used for DT training
         df_attack = pd.read_csv(f"small_BoTIoT_dataset_allattacks_clean/split_29.csv")
         # anomaly samples of testing dataset.             
@@ -524,12 +447,9 @@ def load_crossdataset(which_dataset):
         # 1000 anomaly samples of training dataset. Used for DT training
         df_attack = pd.read_csv(f"small_IoTID20_dataset_allattacks_clean/split_29.csv")
         
-    
-            
         # anomaly samples of testing dataset.             
         attacks = pd.read_csv(f"small_BoTIoT_dataset_allattacks_clean/split_29.csv")
 
-    
         # benign samples of testing dataset.
         bengin = pd.read_csv(f"small_BoTIoT_dataset_benign_clean/split_1.csv") 
         print("load_data2")
@@ -580,7 +500,6 @@ def load_crossdataset(which_dataset):
     # split training data into Training and validation set and benign data for DT training
     X_train_, X_val   = train_test_split(df_benign, test_size=0.2,random_state=42)
     X_train_, X_benign_dt   = train_test_split(X_train_, test_size=0.2,random_state=42) #remove  X_benign_dt for no dt
-
 
     # Scaling
     X_train = log1p_static_scale(X_train_)
@@ -667,7 +586,6 @@ def load_crossdataset(which_dataset):
         y_str = ", ".join([str(int(val)) for val in y_mcu])
         f.write(y_str)
         f.write("\n};\n")
-
 
     return trainloader, validaton_loader ,X_test_full, X_Validation, y_true,X_train_dt,y_dt #remove this for no dt
 

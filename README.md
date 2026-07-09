@@ -12,6 +12,7 @@ A TinyFL model to show a process on how to transfer an ML based IDS from a sandb
   - [Deploying the Model for inference on ESP32](#deploying-the-model-for-inference-on-esp32)
     - [Deploying the Model on ESP32 after a Simulation run](#deploying-the-model-on-esp32-after-a-simulation-run)
       - [pytorch -\> onnx -\>tf -\>tflite with quant-\>.h](#pytorch---onnx--tf--tflite-with-quant-h)
+  - [BibTeX entry](#bibtex-entry)
 
 ## Deploying the Model on PC / Singular Device
 
@@ -35,14 +36,17 @@ Ensure the Python environment you created earlier when setting up your device ha
 Now, launch your 'SuperNode'  
 ```bash
 # Repeat for each embedded device (adjust SuperLink IP and partition-id)
-flower-supernode  --insecure      --superlink SuperLink IP:9092    --node-config "partition-id=0 num-partitions=4"
+flower-supernode --insecure --superlink SuperLink_IP:9092 \
+  --node-config "partition-id=0 num-partitions=4 which_dataset=0"
 ```
 Repeat for each embedded device that you want to connect to the `SuperLink`. Change partition-id if you want the Client to use different Data.
 
 If you want to use SuperLink and SuperNode on PC with multiple Terminals launch 'Supernode' with this
 ```bash
 # Repeat for each embedded device (adjust SuperLink IP, Clientappio Port and partition-id)
-flower-supernode  --insecure      --superlink SuperLink IP:9092  --clientappio-api-address 127.0.0.1:9097  --node-config "partition-id=0 num-partitions=4"
+flower-supernode --insecure --superlink SuperLink_IP:9092 \
+  --clientappio-api-address 127.0.0.1:9097 \
+  --node-config "partition-id=0 num-partitions=4 which_dataset=0"
 ```
 Change the clientappio-api-address Port for each Client. Change partition-id if you want the Client to use different Data.
 

@@ -26,7 +26,6 @@ app = ClientApp()
 def train(msg: Message, context: Context):
     """Train the model on local data."""
     # Training Time
-
     start_time = time.time()
 
     # Load the model and initialize it with the received weights
@@ -42,13 +41,12 @@ def train(msg: Message, context: Context):
     num_partitions = context.node_config["num-partitions"]
     which_dataset: int = context.run_config["which_dataset"]
 
-
     partition = partition_id 
     
     """ which_dataset = 0 is CIC-BoTIoT; everything else is IoTID20 just like """
-    trainloader, validaton_loader, _ ,_, _,_,_ = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
+    #trainloader, validaton_loader, _ ,_, _,_,_ = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
     """ which_dataset 0 for Training CIC-BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing CIC-BoTIoT """
-    #trainloader, validaton_loader, _ ,_, _,_,_ = load_cross_data(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
+    trainloader, validaton_loader, _ ,_, _,_,_ = load_cross_data(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
     
     # Call the training function
     train_loss, val_loss = train_fn(
