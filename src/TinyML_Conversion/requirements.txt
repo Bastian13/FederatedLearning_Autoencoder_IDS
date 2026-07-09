@@ -1,0 +1,4 @@
+tensorflow==2.20.0
+pandas==2.3.3
+numpy==2.2.6
+onnx2tf==1.26.9
