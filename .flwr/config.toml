@@ -1,3 +1,0 @@
-[superlink.embedded-federation]
-address = "127.0.0.1:9093" # ControlAPI of your SUPERLINK
-insecure = true
