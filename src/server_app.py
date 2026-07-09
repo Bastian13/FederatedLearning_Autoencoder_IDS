@@ -1,15 +1,11 @@
 """if-and-auto: A Flower / PyTorch app."""
 
 import torch
+
 from flwr.app import ArrayRecord, ConfigRecord, Context
 from flwr.serverapp import Grid, ServerApp
 from flwr.serverapp.strategy import FedAvg, FedProx
-from task import Autoencoder,global_evaluate
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-logger.info("SERVER: imported server_app.py")
+from src.task import Autoencoder,global_evaluate
 
 # Create ServerApp
 app = ServerApp()
@@ -47,6 +43,3 @@ def main(grid: Grid, context: Context) -> None:
     print("\nSaving final model to disk...")
     state_dict = result.arrays.to_torch_state_dict()
     torch.save(state_dict, "final_model.pt")
-
-
-

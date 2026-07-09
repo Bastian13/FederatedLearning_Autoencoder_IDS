@@ -1,31 +1,30 @@
 """if-and-auto: A Flower / PyTorch app."""
 
-import torch
+import time
+
 from flwr.app import ArrayRecord, Context, Message, MetricRecord, RecordDict
 from flwr.clientapp import ClientApp
 
-from src.task import Autoencoder
-from src.task import test as test_fn
-from src.task import train as train_fn
-from src.dataset_load import load_cross_data,load_mono_dataset
-#dependencies for autoencoder
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 
-from sklearn.metrics import roc_auc_score, confusion_matrix, precision_recall_curve,roc_curve,auc,average_precision_score,classification_report
+from sklearn.metrics import roc_auc_score, confusion_matrix, precision_recall_curve, roc_curve,auc, average_precision_score, classification_report
 
-import time
-# Flower ClientApp
+from src.task import Autoencoder
+from src.task import test as test_fn
+from src.task import train as train_fn
+from src.dataset_load import load_cross_data, load_mono_dataset
+
 torch.use_deterministic_algorithms(True)
 
+# Flower ClientApp
 app = ClientApp()
-
 
 @app.train()
 def train(msg: Message, context: Context):
     """Train the model on local data."""
-    # Training Time
+    
     start_time = time.time()
 
     # Load the model and initialize it with the received weights
@@ -38,28 +37,27 @@ def train(msg: Message, context: Context):
     
     # Load the data
     partition_id = context.node_config["partition-id"]
+    partition = partition_id 
     num_partitions = context.node_config["num-partitions"]
     which_dataset: int = context.run_config["which_dataset"]
-
-    partition = partition_id 
     
-    """ which_dataset = 0 is CIC-BoTIoT; everything else is IoTID20 just like """
-    #trainloader, validaton_loader, _ ,_, _,_,_ = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
-    """ which_dataset 0 for Training CIC-BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing CIC-BoTIoT """
-    trainloader, validaton_loader, _ ,_, _,_,_ = load_cross_data(partition, num_partitions,which_dataset=which_dataset) # do i need dynamic batchsize? WiP
+    #trainloader, validaton_loader, _ ,_, _,_,_ = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset) 
+    trainloader, validaton_loader, _, _, _, _, _ = load_cross_data(partition, num_partitions, which_dataset=which_dataset)
     
     # Call the training function
     train_loss, val_loss = train_fn(
-        model, # Model Autoencoder
-        trainloader,validaton_loader, # training and validation set
-        partition, # Partition id
-        context.run_config["local-epochs"],# epochs
+        model,
+        trainloader,
+        validaton_loader,
+        partition,
+        context.run_config["local-epochs"],
         msg.content["config"]["lr"], #learning rate
         context.run_config["mu"], #mu for Fedprox
         device,
     )
     end_time = time.time()
     training_time = end_time - start_time
+
     # Construct and return reply Message
     model_record = ArrayRecord(model.state_dict())
     metrics = {
@@ -76,48 +74,40 @@ def train(msg: Message, context: Context):
 @app.evaluate()
 def evaluate(msg: Message, context: Context):
     """Evaluate the model on local data."""
-    # Testing Time
 
     start_time = time.time()
 
     # Load the model and initialize it with the received weights
-
-    model = Autoencoder(67)
-
+    input_dim: int = context.run_config["input-dim"]
+    model = Autoencoder(input_dim)
     model.load_state_dict(msg.content["arrays"].to_torch_state_dict())
-
 
     device = torch.device("cpu")
     model.to(device)
 
     # Load the data
     partition_id = context.node_config["partition-id"]
+    partition = partition_id 
     num_partitions = context.node_config["num-partitions"]
     which_dataset: int = context.run_config["which_dataset"]
 
-    partition = partition_id 
-    
-    """ which_dataset = 0 is CIC-BoTIoT; everything else is IoTID20 """
-    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset)  # do i need dynamic batchsize? WiP
-    """ which_dataset 0 for Training CIC-BoTIoT -> Testing IoTID20; everything else for Training IoTID20 -> Testing CIC-BoTIoT """
-    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_cross_data(partition, num_partitions,which_dataset=which_dataset)
+    #_,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_mono_dataset(partition, num_partitions,which_dataset=which_dataset)
+    _,_,X_test_full, X_test_validation, y_true,X_train_dt,y_dt = load_cross_data(partition, num_partitions, which_dataset=which_dataset)
      
     # Call the evaluation function
-    threshold, y_pred_percentile, errors_full, errors_val,y_pred,y_proba,_,_ = test_fn(
+    threshold, y_pred_percentile, errors_full, errors_val, y_pred, y_proba, _, _ = test_fn(
         model, # Autoencoder
         X_test_full, X_test_validation, # Data for Testing
         partition, # Partition ID
         device, 
-        X_train_dt,y_dt # Data for Decision Tree #remove this for no dt
+        X_train_dt,y_dt # Data for Decision Tree; remove this for no dt
     )
 
- 
     # Metrics for Client Eval
     # Confusion matrix
     cmpercentile = confusion_matrix(y_true, y_pred_percentile)
     cm_dt = confusion_matrix(y_true,y_pred) #remove this for no dt
  
-  
     print(f"\nConfusion Matrix Classify and Device Number {partition}:")
     print(cm_dt) #remove this for no dt
     
@@ -136,27 +126,26 @@ def evaluate(msg: Message, context: Context):
     print(f"Device {partition} Fprpercentile",float("{:.2f}".format(fprpercentile)),"Fnrpercentile",float("{:.2f}".format(fnrpercentile)),"FPR DT",
           float("{:.2f}".format(fprdt)),"FNR DT",float("{:.2f}".format(fnrdt))) #remove this for no dt
 
-
-
     end_time = time.time()
     testing_time = end_time - start_time
     
     # Construct and return reply Message
     # Return the evaluation metrics
     metrics = {
-        #"threshold": float(threshold),
-        #"fprpercentile": float("{:.4f}".format(fprpercentile)),
-        #"fnrpercentile": float("{:.4f}".format(fnrpercentile)),
+        "threshold": float(threshold),
+        "fprpercentile": float("{:.4f}".format(fprpercentile)),
+        "fnrpercentile": float("{:.4f}".format(fnrpercentile)),
         #"FPR DT": float("{:.4f}".format(fprdt)), #remove this for no dt
-       # "FNR DT": float("{:.4f}".format(fnrdt)), #remove this for no dt
-        #"PR AUC": float("{:.4f}".format(a)), 
+        #"FNR DT": float("{:.4f}".format(fnrdt)), #remove this for no dt
+        "PR AUC": float("{:.4f}".format(a)), 
         #"ROC AUC DT": float("{:.4f}".format(b)), #remove this for no dt
-        #"ROC AUC Error": float("{:.4f}".format(c)),
-       # "PR AUC Error": float("{:.4f}".format(d)),
-       # "Precision":float(("{:.4f}".format(pr_precísion))),
-        "avg_testing_time": float("{:.4f}".format(testing_time)),  # New metric
+        "ROC AUC Error": float("{:.4f}".format(c)),
+        "PR AUC Error": float("{:.4f}".format(d)),
+        "Precision":float(("{:.4f}".format(pr_precísion))),
+        "mttd": float("{:.4f}".format(testing_time)),  # New metric
         "num-examples": len(y_true),
     }
     metric_record = MetricRecord(metrics)
     content = RecordDict({"metrics": metric_record})
+
     return Message(content=content, reply_to=msg)

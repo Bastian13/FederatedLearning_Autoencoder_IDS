@@ -1,24 +1,27 @@
 """if-and-auto: A Flower / PyTorch app."""
 
-import torch.nn.functional as F
-from torch.utils.data import DataLoader
-from flwr.app import ArrayRecord, Context, Message, MetricRecord, RecordDict
-#dependencies for autoencoder
-import torch
-import torch.nn as nn
-from sklearn.preprocessing import StandardScaler
-import pandas as pd
-import numpy as np
-from sklearn.metrics import classification_report, confusion_matrix, f1_score,roc_auc_score, average_precision_score, matthews_corrcoef,accuracy_score
-import matplotlib.pyplot as plt
-import copy
-from sklearn.tree import DecisionTreeClassifier, plot_tree
-import psutil
-from src.dataset_load import load_centralized_dataset,load_crossdataset
 import os
 import time
-import emlearn
+import copy
+import psutil
 
+import emlearn
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.utils.data import DataLoader
+
+from flwr.app import ArrayRecord, Context, Message, MetricRecord, RecordDict
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report, confusion_matrix, f1_score,roc_auc_score, average_precision_score, matthews_corrcoef,accuracy_score
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+
+from src.dataset_load import load_centralized_dataset,load_crossdataset
 
 class Autoencoder(nn.Module):
     def __init__(self, input_dim,dropout_rate=0.4): 
@@ -48,7 +51,6 @@ class Autoencoder(nn.Module):
             nn.ReLU(0.2),
             
             nn.Linear(48, input_dim) 
-
         )
     
     def forward(self, x):
@@ -108,28 +110,26 @@ def train(net, trainloader, validaton_loader,partition_id, epochs, lr,mu ,device
         
         # Early stopping check
         if avg_val_loss < best_val_loss: 
-                    best_val_loss = avg_val_loss
-                    #best_model_wts = copy.deepcopy(net.state_dict()) 
-                    patience_counter = 0
+            best_val_loss = avg_val_loss
+            #best_model_wts = copy.deepcopy(net.state_dict()) 
+            patience_counter = 0
         else:
-                    patience_counter += 1
+            patience_counter += 1
             
-
         # Stop if overfitting detected
         if patience_counter >= patience:
             print(f'\n Early stopping triggered at epoch {epoch+1}')
             print(f'   Validation loss has not improved for {patience} epochs')
             print(f'Train Loss: {avg_train_loss:.6f} | Val Loss: {avg_val_loss:.6f}')
             break
-    print_memory_usage()    
+
+    print_memory_usage()  
+     
     avg_trainloss = train_loss/len(trainloader)
     avg_valloss = val_loss / len(validaton_loader)
     print(f'Train Loss: {avg_trainloss:.6f} | Val Loss: {avg_valloss:.6f}')
 
     return avg_trainloss, avg_valloss    
-
-    
-
 
 def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #remove this for no dt
     """Validate the model on the test set."""
@@ -166,6 +166,7 @@ def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #
         
         mu_val = np.mean(errors_val) #remove this for no dt
         sigma_val = np.std(errors_val) + 1e-8  #remove this for no dt
+
     # For training (used in classifier). Z-score normalisation
     errors_dt_norm = errors_dt #remove this for no dt
 
@@ -183,19 +184,24 @@ def test(net, X_test_full, X_Validation,partition_id, device,X_train_dt,y_dt): #
     dt_tinyml = DecisionTreeClassifier(max_depth=4,class_weight='balanced')  # 16 leaves max  #remove this for no dt; This is for exporting to MCU
 
     X_features_test = np.column_stack([X_test_encoded*10000, errors_full_norm*10000, stats_test*10000]) #remove this for no dt 
+    
     # DT fit and predict
     dt.fit(X_features, y_dt)  #remove this for no dt
     y_pred = dt.predict(X_features_test) #remove this for no dt
     y_proba = dt.predict_proba(X_features_test)[:, 1]  #remove this for no dt
+
     # Unsupervised Thresholding, Percentile
     threshold_percentile = np.percentile(errors_val,85)
     print("Threshold percentile 85")
+
     y_pred_percentile = (errors_full > threshold_percentile).astype(int)
+
     print_memory_usage()
+
     X_train_int16 = np.clip(X_features, -32768, 32767).astype(np.int16) # remove this for no dt
     dt_tinyml.fit(X_train_int16, y_dt) # remove this for no dt
-    return threshold_percentile, y_pred_percentile , errors_full, errors_val,y_pred,y_proba,dt,dt_tinyml #remove everything with dt for no dt
 
+    return threshold_percentile, y_pred_percentile , errors_full, errors_val,y_pred,y_proba,dt,dt_tinyml #remove everything with dt for no dt
 
 def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     """Evaluate model on central data."""
@@ -236,8 +242,10 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
   
     print(f"\nConfusion Matrix Classify:")
     print(cm_dt) #remove this for no dt
+
     tn_dt, fp_dt, fn_dt, tp_dt = confusion_matrix(y_true, y_pred).ravel() #remove this for no dt
     tn_percentile, fp_percentile, fn_percentile, tp_percentile = confusion_matrix(y_true, y_pred_percentile).ravel()
+
     # Use Confusion Matrix to calculate fnr and fpr for Percentile and DT 
     fprpercentile=cmpercentile[0][1]/ (cmpercentile[0][0]+cmpercentile[0][1]) 
     fnrpercentile=cmpercentile[1][0]/ (cmpercentile[1][1]+cmpercentile[1][0]) 
@@ -284,13 +292,13 @@ def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:
     c_model = emlearn.convert(dt_tinyml, method='inline')
     c_model.save(file='tree_model.h', name='my_model')
 
-
     acc_ae = accuracy_score(y_true,y_pred_percentile)
     acc_dt = accuracy_score(y_true,y_pred) #remove this for no dt
 
     end_time = time.time()
     testing_time = end_time - start_time
     print(testing_time)
+
     # Construct and return reply Message
     # Return the evaluation metrics
     return MetricRecord({
@@ -366,9 +374,10 @@ def intrusion_detection_capability(y_true, y_pred):
 
     return IDC
 
-
 def print_memory_usage():
+
     process = psutil.Process(os.getpid())
+
     # Convert bytes to Megabytes
     mem_mb = process.memory_info().rss / (1024 * 1024)
     print(f"Current RAM usage: {mem_mb:.2f} MB")
